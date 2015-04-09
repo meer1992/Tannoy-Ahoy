@@ -1,0 +1,10 @@
+{
+	"name": "tannoyserver",
+	"description": "A simple vibe.d server application.",
+	"copyright": "Copyright © 2015, mitch",
+	"authors": ["mitch"],
+	"dependencies": {
+		"vibe-d": "~master",
+       	},
+	"versions": ["VibeDefaultMain"]
+}
