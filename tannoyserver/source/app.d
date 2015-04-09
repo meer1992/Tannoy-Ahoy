@@ -5,6 +5,15 @@ import vibe.http.server;
 import vibe.web.rest;
 import std.datetime;
  
+//Easy ways to populate the server with data using curl:
+// $ curl -H "Content-Type: application/json" -X GET localhost:8080/queue
+// $ curl -H "Content-Type: application/json" -X PUT -d '{"message":"this is a test message"}' localhost:8080/add
+
+//Using Java:
+// GET: http://stackoverflow.com/a/1485730
+// PUT: http://stackoverflow.com/a/1051105
+
+
 struct ResponseQueue {
 	string sender;
 	Response[] queue;
@@ -18,12 +27,18 @@ struct Response{
 }
  
 interface ResponseAPI {
+	//Accessible by: GET localhost:8080/queue -- Returns a JSON object
 	ResponseQueue getQueue();
-	@property void add(string add);
-	@property string add();
+
+	//Accessible by: PUT localhost:8080/add {"message":"..."} -- Must be JSON formatted.
+	@property void add(string message);
 }
  
 class ResponseImplementation : ResponseAPI {
+	this(string sender){
+		responseQueue = ResponseQueue(sender);
+	}	
+
 	protected ResponseQueue responseQueue;
  	
 	ResponseQueue getQueue(){
@@ -33,14 +48,12 @@ class ResponseImplementation : ResponseAPI {
 	@property void add(string message){
 		responseQueue.queue ~= Response(message);
 	}
- 
-	@property string add(){ return null; }
 }
  
 shared static this()
 {
 	auto router = new URLRouter;
-	router.registerRestInterface(new ResponseImplementation);
+	router.registerRestInterface(new ResponseImplementation("Test Server"));
 	auto settings = new HTTPServerSettings;
 	settings.port = 8080;
 	listenHTTP(settings, router);

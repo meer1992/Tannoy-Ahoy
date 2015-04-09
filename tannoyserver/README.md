@@ -42,4 +42,7 @@ Download all the files bar the executable (the ~19mb file), navigate to the dire
 Dub will resolve all dependancies and store them in ~/.dub
 Please ensure that you have both .JSON files in the folder as that is what dub uses to resolve dependancies.
 
+
+Instructions on how to query the server are in ./source/app.d
+
 Any issues, either put a request on github or send me a message on FaceBook/email
