@@ -27,7 +27,7 @@ You will then need to add it to your PATH
   
 Add this line to the end:
   ```bash
-  export PATH=${PATH}:/path/to/dub/bin
+  export PATH=${PATH}:/path/to/dub/
   ```
 
 Log out and in to reload .profile
