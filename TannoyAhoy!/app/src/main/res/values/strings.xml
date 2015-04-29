@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Tannoy Ahoy!</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_send">Make an announcement</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_about">about</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
 </resources>

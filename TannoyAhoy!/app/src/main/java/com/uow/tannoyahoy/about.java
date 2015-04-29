@@ -1,42 +1,40 @@
 package com.uow.tannoyahoy;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends Activity {
+
+public class about extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_about);
 
-        setupAboutButton();
+        setupHomeButton();
     }
 
-    private void setupAboutButton() {
-        Button btnAbout = (Button) findViewById(R.id.btnAbout);
+    private void setupHomeButton() {
+        Button btnHome = (Button) findViewById(R.id.btnHome);
 
 
-        btnAbout.setOnClickListener(new View.OnClickListener() {
+        btnHome.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), about.class);
-                startActivityForResult(intent, 0);
+                finish();
             }
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_about, menu);
         return true;
     }
 
