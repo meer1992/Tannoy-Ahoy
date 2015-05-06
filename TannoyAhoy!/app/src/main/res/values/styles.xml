@@ -2,7 +2,16 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/ActionBar</item>
+    </style>
+    <style name="ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/tannoy_dark_blue</item>
+
+        <!-- Compatibility -->
+        <item name="background">@color/tannoy_dark_blue</item>
     </style>
 
 </resources>
