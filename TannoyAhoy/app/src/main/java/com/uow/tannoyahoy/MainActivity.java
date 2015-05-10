@@ -15,8 +15,11 @@ import android.widget.TextView;
 import java.util.List;
 
 
+
 public class MainActivity extends ActionBarActivity {
     private TannoySpeech theTannoySpeech;
+    final String strJsonParserExample = "{\"sender\":\"Test Server\",\"queue\":[{\"time\":\"2015-04-07T20:14:05.335358\",\"message\":\"This is a test message\"}" +
+            ",{\"time\":\"2015-04-07T20:14:56.4748071\",\"message\":\"This is some more stuff being added\"}]}";
 
     private static final int SPEECH_REQUEST_CODE = 0;
 
@@ -25,6 +28,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         //define the activity layout.
         setContentView(R.layout.activity_main);
+        //example of json call (can use a straight json object or a string formated to Json standard
+        JsonParser json = new JsonParser(strJsonParserExample);
+
 
         //Also perform initial setup of activity components
         //such as initialising Text To Speech
