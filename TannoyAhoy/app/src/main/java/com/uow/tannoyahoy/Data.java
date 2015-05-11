@@ -35,4 +35,10 @@ public class Data {
 
         return message_;
     }
+
+    @Override
+    public String toString()
+    {
+        return(DateFormat.getTimeInstance(DateFormat.MEDIUM).format(dateSent_)+"\n"+message_);
+    }
 }

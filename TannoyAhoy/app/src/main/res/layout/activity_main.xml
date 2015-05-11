@@ -36,7 +36,9 @@
         android:layout_height="0dip"
         android:layout_weight="2"
         android:gravity="center|top"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:id="@+id/linearLayoutMain">
 
         <TextView
             android:layout_width="match_parent"
@@ -44,7 +46,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Auckland Airport"
             android:id="@+id/textView4"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/tannoy_white"
             android:background="@color/tannoy_dark_blue"
             android:paddingTop="5dp"
@@ -61,7 +63,10 @@
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:textColor="@color/tannoy_black"
-            android:background="@color/tannoy_light_blue" />
+            android:background="@color/tannoy_light_blue"
+            android:elevation="7dp"
+            android:typeface="normal"
+            android:phoneNumber="false" />
 
         <TextView
             android:layout_width="match_parent"
@@ -74,26 +79,25 @@
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:textColor="@color/tannoy_black"
-            android:background="@color/tannoy_light_blue" />
+            android:background="@color/tannoy_light_blue"
+            android:elevation="7dp"
+            android:elegantTextHeight="false" />
 
-        <TextView
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="10.00am - Singapore Airlines SG03 gate changed from gate 3 to gate 4"
-            android:id="@+id/textView6"
+            android:layout_height="match_parent"
+            android:id="@+id/listViewMain"
             android:layout_gravity="start"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="10dp"
             android:textColor="@color/tannoy_black"
-            android:background="@color/tannoy_light_blue" />
+            android:drawSelectorOnTop="true"
+            android:dividerHeight="10dp"
+            android:divider="#0000" />
     </LinearLayout>
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1"
+        android:layout_weight="0.50"
         android:gravity="center|bottom"
         android:orientation="vertical"
         android:columnCount="3"
@@ -116,11 +120,12 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Announce"
+            android:text="Update"
             android:layout_row="0"
             android:layout_column="1"
             android:layout_gravity="fill_horizontal|bottom"
-            android:layout_columnWeight="1" />
+            android:layout_columnWeight="1"
+            android:onClick="updateListViewMain" />
 
         <Button
             android:id="@+id/btnAbout"

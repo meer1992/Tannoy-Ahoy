@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#59d3fb">
+    android:background="@color/tannoy_white_blue">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -45,16 +45,21 @@
             android:layout_height="wrap_content"
             android:text="A project created for a COMP241-15A Assignment at Waikato University, managed by Mohammed Al-Rahbi."
             android:id="@+id/textView"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:paddingBottom="30dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:text="Team members: Anthony Meehan Isa Ibrahim Jordan Schroder Mitchell Grout Shash Sinha"
+            android:text="Team members:\nAnthony Meehan, Isa Ibrahim, Jordan Schroder, Mitchell Grout, Shash Sinha"
             android:id="@+id/textView2"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_weight="1"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,7 +72,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tannoy Ahoy v1.01"
+            android:text="Tannoy Ahoy v1.04"
             android:id="@+id/textView3"
             android:layout_gravity="center_horizontal" />
 

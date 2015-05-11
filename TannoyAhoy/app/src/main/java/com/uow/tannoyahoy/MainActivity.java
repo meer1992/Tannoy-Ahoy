@@ -9,8 +9,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import java.util.List;
 
@@ -18,8 +20,12 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
     private TannoySpeech theTannoySpeech;
-    final String strJsonParserExample = "{\"sender\":\"Test Server\",\"queue\":[{\"time\":\"2015-04-07T20:14:05.335358\",\"message\":\"This is a test message\"}" +
-            ",{\"time\":\"2015-04-07T20:14:56.4748071\",\"message\":\"This is some more stuff being added\"}]}";
+
+    private final String strJsonParserExample =
+            "{\"sender\":\"Test Server\",\"queue\":[{\"time\":\"2015-04-07T20:14:05.335358\",\"message\":\"This is a test message\"}" +
+                                                  ",{\"time\":\"2015-04-07T20:14:56.4748071\",\"message\":\"This is some more stuff being added\"}" +
+                                                  ",{\"time\":\"2015-04-07T20:15:26.4748071\",\"message\":\"Singapore Airlines SG03 gate changed from gate 3 to gate 4\"}]}";
+    private JsonParser theMainJsonParser;
 
     private static final int SPEECH_REQUEST_CODE = 0;
 
@@ -29,8 +35,7 @@ public class MainActivity extends ActionBarActivity {
         //define the activity layout.
         setContentView(R.layout.activity_main);
         //example of json call (can use a straight json object or a string formated to Json standard
-        JsonParser json = new JsonParser(strJsonParserExample);
-
+        theMainJsonParser = new JsonParser(strJsonParserExample);
 
         //Also perform initial setup of activity components
         //such as initialising Text To Speech
@@ -54,6 +59,15 @@ public class MainActivity extends ActionBarActivity {
     public void gotoAbout(View theView) {
         startActivity(new Intent(this,about.class));
     }
+
+    /**Updates the main list of messages when user clicks "update"*/
+    public void updateListViewMain(View theView) {
+        //adapter which essentially calls toString() on a list of objects, then passes it into a listView
+        ArrayAdapter<Data> theAdapter = new ArrayAdapter<Data>(this,R.layout.list_item_main,theMainJsonParser.getList());
+        ListView theListview = (ListView) findViewById(R.id.listViewMain);
+        theListview.setAdapter(theAdapter);
+    }
+
 
     /**An example of using TannoySpeech. Buttons can call this with XML android:onClick="sendMessage"*/
 
