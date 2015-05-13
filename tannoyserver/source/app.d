@@ -76,7 +76,7 @@ class API : ResponseAPI {
 
  	protected ResponseQueue[string] servers;
 
-	enum timeout = 1.minutes; //30.minutes;
+	enum timeout = 30.minutes;
 	private void removeItems(){
 		size_t i = 0;
 		auto now = Clock.currTime;
