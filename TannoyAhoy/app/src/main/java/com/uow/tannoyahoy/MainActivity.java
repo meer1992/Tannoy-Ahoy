@@ -1,20 +1,14 @@
 package com.uow.tannoyahoy;
 
 
-import android.app.Activity;
 import android.content.Intent;
-import android.speech.RecognizerIntent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import java.util.List;
 
 
 
@@ -55,10 +49,29 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**Starts the "about" activity when the user clicks "about"*/
-    public void gotoAbout(View theView) {
+    /**
+     * This method is invoked when user clicks settings menu option
+     * @param menuItem
+     **/
+    public void settingsClicked (MenuItem menuItem) {
+        startActivity(new Intent(this,Settings.class));
+    }
+    /**
+     * This method is invoked when user clicks about menu option
+     * @param menuItem
+     */
+    public void aboutClicked (MenuItem menuItem) {
         startActivity(new Intent(this,about.class));
     }
+
+    /**
+     * This method is invoked when user clicks login menu option
+     * @param menuItem
+     **/
+    public void loginClicked (MenuItem menuItem) {
+        startActivity(new Intent(this,Login.class));
+    }
+
 
     /**Updates the main list of messages when user clicks "update"*/
     public void updateListViewMain(View theView) {

@@ -1,25 +1,24 @@
 package com.uow.tannoyahoy;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class about extends ActionBarActivity {
+public class Settings extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-
+        setContentView(R.layout.activity_settings);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_about, menu);
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
         return true;
     }
 
@@ -36,13 +35,5 @@ public class about extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * This method is invoked when user clicks settings menu option
-     * @param menuItem
-     **/
-    public void settingsClicked (MenuItem menuItem) {
-        startActivity(new Intent(this,Settings.class));
     }
 }

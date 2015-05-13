@@ -5,61 +5,41 @@
     android:orientation="vertical"
     android:background="@color/tannoy_white_blue">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/imageView"
-            android:layout_weight="1"
-            android:src="@drawable/tannoy_ahoy_logo_basic"
-            android:contentDescription="Tannoy Ahoy! basic logo"
-            android:paddingLeft="90dp"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/app_name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:paddingLeft="0dp"
-            android:gravity="center" />
-    </LinearLayout>
-
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center|center_vertical">
+        android:layout_weight="1.36"
+        android:background="@color/tannoy_light_blue"
+        android:gravity="center|center_vertical"
+        android:layout_marginTop="30dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="A project created for a COMP241-15A Assignment at Waikato University, managed by Mohammed Al-Rahbi."
             android:id="@+id/textView"
             android:textSize="20dp"
+            android:textColor="@color/tannoy_black"
             android:paddingBottom="30dp"
             android:paddingEnd="20dp"
-            android:paddingStart="20dp" />
+            android:paddingStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:text="Team members:\nAnthony Meehan, Isa Ibrahim, Jordan Schroder, Mitchell Grout, Shash Sinha"
+            android:text="Team members:\nAnthony Meehan \nIsa Ibrahim \nJordan Schroder \nMitchell Grout \nShashwat Sinha"
             android:id="@+id/textView2"
-            android:layout_gravity="center_horizontal|bottom"
+            android:textColor="@color/tannoy_black"
             android:layout_weight="1"
             android:textSize="20dp"
             android:paddingEnd="5dp"
-            android:paddingStart="20dp" />
+            android:paddingStart="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,18 +52,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tannoy Ahoy v1.04"
+            android:text="  Tannoy Ahoy v1.05  "
+            android:textColor="@color/tannoy_black"
+            android:background="@color/tannoy_light_blue"
             android:id="@+id/textView3"
             android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:id="@+id/btnHome"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="145dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center"
-            android:text="Main Screen"
-            android:onClick="@string/title_activity_main" />
 
     </LinearLayout>
 

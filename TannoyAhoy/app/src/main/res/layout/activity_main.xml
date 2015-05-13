@@ -5,32 +5,6 @@
     android:orientation="vertical"
     android:background="@color/tannoy_white_blue">
 
-<!--    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/imageView"
-            android:layout_weight="1"
-            android:src="@drawable/tannoy_ahoy_logo_basic"
-            android:contentDescription="Tannoy Ahoy! basic logo"
-            android:paddingLeft="90dp"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/app_name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:paddingLeft="0dp"
-            android:gravity="center" />
-    </LinearLayout>-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
@@ -44,14 +18,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Auckland Airport"
+            android:text="Annoucements at your location: "
             android:id="@+id/textView4"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/tannoy_white"
             android:background="@color/tannoy_dark_blue"
             android:paddingTop="5dp"
             android:gravity="start"
-            android:paddingStart="20dp" />
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Auckland Airport"
+            android:id="@+id/textView9"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/tannoy_white"
+            android:background="@color/tannoy_dark_blue"
+            android:paddingTop="1dp"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -99,45 +88,39 @@
         android:layout_height="0dip"
         android:layout_weight="0.50"
         android:gravity="center|bottom"
-        android:orientation="vertical"
-        android:columnCount="3"
-        android:rowCount="1"
+        android:orientation="horizontal"
+        android:columnCount="2"
+        android:rowCount="5"
         android:layout_gravity="bottom">
-
-        <Button
-            android:id="@+id/button2"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:text="Login"
-            android:layout_row="0"
-            android:layout_column="0"
-            android:layout_columnWeight="1" />
 
         <Button
             android:id="@+id/button1"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Update"
-            android:layout_row="0"
+            android:text="@string/button_update"
+            android:layout_row="3"
             android:layout_column="1"
-            android:layout_gravity="fill_horizontal|bottom"
+            android:layout_gravity="fill_horizontal"
             android:layout_columnWeight="1"
             android:onClick="updateListViewMain" />
 
-        <Button
-            android:id="@+id/btnAbout"
-            style="?android:attr/buttonStyleSmall"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|bottom"
-            android:text="About"
-            android:onClick="gotoAbout"
-            android:layout_row="0"
-            android:layout_column="2"
-            android:layout_columnWeight="1" />
-    </GridLayout>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/main_update"
+            android:id="@+id/textView6"
+            android:layout_row="4"
+            android:layout_column="1"
+            android:layout_gravity="end"
+            android:layout_marginEnd="24dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="6dp"
+            android:textSize="12sp"
+            android:layout_marginStart="7dp"
+            android:textStyle="italic"
+            />
 
+    </GridLayout>
 </LinearLayout>
