@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class Login extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,6 @@ public class Login extends ActionBarActivity {
      * @param menuItem
      **/
     public void settingsClicked (MenuItem menuItem) {
-        startActivity(new Intent(this,Settings.class));
+        startActivity(new Intent(this,SettingsActivity.class));
     }
 }

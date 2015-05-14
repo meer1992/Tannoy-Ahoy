@@ -1,7 +1,9 @@
 package com.uow.tannoyahoy;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
     private TannoySpeech theTannoySpeech;
+    private LocationBroadcastReceiver locationBroadcastReceiver;
 
     private final String strJsonParserExample =
             "{\"sender\":\"Test Server\",\"queue\":[{\"time\":\"2015-04-07T20:14:05.335358\",\"message\":\"This is a test message\"}" +
@@ -31,9 +34,22 @@ public class MainActivity extends ActionBarActivity {
         //example of json call (can use a straight json object or a string formated to Json standard
         theMainJsonParser = new JsonParser(strJsonParserExample);
 
+        //setup the location-backend
+        locationBroadcastReceiver = new LocationBroadcastReceiver();
+        setupReceiver();
+        startService(new Intent(App.context, BackgroundLocationService.class));
+
         //Also perform initial setup of activity components
         //such as initialising Text To Speech
         theTannoySpeech = new TannoySpeech(this);
+    }
+
+    private void setupReceiver() {
+        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTED_ACTION));
+        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.BOOT_COMPLETED_ACTION));
+        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
+        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
+        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.LOCATION_CHANGED_ACTION));
     }
 
     @Override
@@ -54,14 +70,14 @@ public class MainActivity extends ActionBarActivity {
      * @param menuItem
      **/
     public void settingsClicked (MenuItem menuItem) {
-        startActivity(new Intent(this,Settings.class));
+        startActivity(new Intent(this,SettingsActivity.class));
     }
     /**
      * This method is invoked when user clicks about menu option
      * @param menuItem
      */
     public void aboutClicked (MenuItem menuItem) {
-        startActivity(new Intent(this,about.class));
+        startActivity(new Intent(this,AboutActivity.class));
     }
 
     /**
@@ -69,9 +85,8 @@ public class MainActivity extends ActionBarActivity {
      * @param menuItem
      **/
     public void loginClicked (MenuItem menuItem) {
-        startActivity(new Intent(this,Login.class));
+        startActivity(new Intent(this,LoginActivity.class));
     }
-
 
     /**Updates the main list of messages when user clicks "update"*/
     public void updateListViewMain(View theView) {
@@ -81,7 +96,11 @@ public class MainActivity extends ActionBarActivity {
         theListview.setAdapter(theAdapter);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(App.context, BackgroundLocationService.class));
+    }
     /**An example of using TannoySpeech. Buttons can call this with XML android:onClick="sendMessage"*/
 
     /*public void sendMessage(View theView) {

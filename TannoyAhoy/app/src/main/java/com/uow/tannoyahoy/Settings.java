@@ -1,39 +1,65 @@
 package com.uow.tannoyahoy;
 
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+/**
+ * Created by Pwnbot on 2/05/2015.
+ */
+public class Settings {
+    private static Settings ourInstance;
+    private Boolean mHasBackgroundUpdates;
+    private Boolean mHasBackgroundAlerts;
+    private long mReconnectInterval;
+    private long mLocationInterval;
+    private long mFastestLocationInterval;
 
 
-public class Settings extends ActionBarActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+    public static Settings getInstance() {
+        if (ourInstance == null) {ourInstance = new Settings();}
+        return ourInstance;
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
-        return true;
+    private Settings() {
+        resetSettings();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    //legacy code, still might be implemented/useful
+    public void toggleBackgroundUpdates() {
+        mHasBackgroundUpdates = !mHasBackgroundUpdates;
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+    //legacy code, still might be implemented/useful
+    public void toggleBackgroundAlerts() {
+        mHasBackgroundAlerts = !mHasBackgroundAlerts;
+        mHasBackgroundUpdates = !mHasBackgroundUpdates;
+    }
 
-        return super.onOptionsItemSelected(item);
+    public void setLocationInterval(long value) {mLocationInterval = value;}
+
+    public void setFastestLocationInterval(long value) {
+        if (value < mLocationInterval) {mFastestLocationInterval = value;}
+        else {mLocationInterval = mFastestLocationInterval = value;}
+    }
+
+    //legacy code, still might be implemented/useful
+    public Boolean hasBackgroundUpdates() {return mHasBackgroundUpdates;}
+
+    //legacy code, still might be implemented/useful
+    public Boolean hasBackgroundAlerts() {return  mHasBackgroundAlerts;}
+
+    public long getLocationUpdateInterval() {return mLocationInterval;}
+
+    public long getFastestLocationUpdateInterval() {return mFastestLocationInterval;}
+
+    public long getReconnectInterval() {return mReconnectInterval; }
+
+    //legacy code, still might be implemented/useful
+    public void setReconnectInterval(long value) {mReconnectInterval = value; }
+
+
+    public void resetSettings() {
+        mHasBackgroundUpdates = Constants.DEFAULT_HAS_BACKGROUND_LOCATION_UPDATES;
+        mHasBackgroundAlerts = Constants.DEFAULT_HAS_LOCATION_NOTIFICATIONS;
+        mLocationInterval = Constants.DEFAULT_LOCATION_UPDATE_INTERVAL;
+        mFastestLocationInterval = Constants.DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL;
+        mReconnectInterval = Constants.DEFAULT_RECONNECT_TO_LOCATION_CLIENT_INTERVAL;
     }
 }
