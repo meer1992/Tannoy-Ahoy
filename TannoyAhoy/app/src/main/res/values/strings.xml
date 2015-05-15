@@ -12,7 +12,7 @@
     <string name="title_activity_display_message">My Message</string>
     <string name="title_activity_about">About</string>
     <string name="action_search">Search</string>
-    <string name="main_update">announcements list is set to auto update every 20 seconds</string>
+    <string name="main_update">list auto updates every 20 seconds</string>
     <string name="title_activity_login">Login</string>
 
     <string name="hello_world">Hello world!</string>

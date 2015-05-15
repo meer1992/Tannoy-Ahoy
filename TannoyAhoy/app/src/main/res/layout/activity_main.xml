@@ -18,59 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Annoucements at your location: "
-            android:id="@+id/textView4"
-            android:layout_marginBottom="5dp"
+            android:text="Auckland Airport"
+            android:id="@+id/mainSubHeading"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/tannoy_white"
             android:background="@color/tannoy_dark_blue"
             android:paddingTop="5dp"
             android:gravity="start"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Auckland Airport"
-            android:id="@+id/textView9"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/tannoy_white"
-            android:background="@color/tannoy_dark_blue"
-            android:paddingTop="1dp"
-            android:gravity="start"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="10.10am - Air New Zealand NZ08 gate changed from gate 19 to gate 5"
-            android:id="@+id/textView5"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="10dp"
-            android:textColor="@color/tannoy_black"
-            android:background="@color/tannoy_light_blue"
-            android:elevation="7dp"
-            android:typeface="normal"
-            android:phoneNumber="false" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="10.07am - Last call for John Doe for QA23 please go to gate 15 immediately"
-            android:id="@+id/textView7"
-            android:layout_gravity="start"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="10dp"
-            android:textColor="@color/tannoy_black"
-            android:background="@color/tannoy_light_blue"
-            android:elevation="7dp"
-            android:elegantTextHeight="false" />
+            android:paddingStart="20dp" />
 
         <ListView
             android:layout_width="match_parent"
@@ -83,27 +38,40 @@
             android:divider="#0000" />
     </LinearLayout>
 
+
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.50"
+        android:layout_height="wrap_content"
         android:gravity="center|bottom"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:columnCount="2"
-        android:rowCount="5"
-        android:layout_gravity="bottom">
+        android:rowCount="2"
+        android:layout_gravity="bottom"
+        android:background="@color/tannoy_dark_blue">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/buttonUpdate"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_update"
-            android:layout_row="3"
-            android:layout_column="1"
-            android:layout_gravity="fill_horizontal"
+            android:text="Update"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_gravity="fill_horizontal|bottom"
             android:layout_columnWeight="1"
             android:onClick="updateListViewMain" />
+
+        <Button
+            android:id="@+id/buttonClear"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:onClick="clearListViewMain"
+            android:layout_gravity="fill_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -111,16 +79,14 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/main_update"
             android:id="@+id/textView6"
-            android:layout_row="4"
-            android:layout_column="1"
-            android:layout_gravity="end"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_gravity="center"
             android:layout_marginEnd="24dp"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="6dp"
             android:textSize="12sp"
             android:layout_marginStart="7dp"
-            android:textStyle="italic"
-            />
-
+            android:textStyle="italic" />
     </GridLayout>
 </LinearLayout>
