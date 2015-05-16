@@ -4,6 +4,7 @@ import vibe.http.router;
 import vibe.http.server;
 import vibe.web.rest;
 import vibe.data.json;
+import vibe.stream.ssl;
 import std.datetime, core.time;
 
 //TODO:
@@ -69,9 +70,15 @@ interface ResponseAPI {
 }
  
 class API : ResponseAPI {
+	enum delay = 15.seconds;	
+	
+	this(){
+		setTimer(delay, &removeItems, true);
+	}	
+
 	this(string name){
 		servers[name] = ResponseQueue(name);
-		setTimer(15.seconds, &removeItems, true);
+		setTimer(delay, &removeItems, true);
 	}	
 
  	protected ResponseQueue[string] servers;
@@ -160,9 +167,19 @@ class API : ResponseAPI {
 shared static this()
 {
 	auto router = new URLRouter;
-	router.registerRestInterface(new API("Test"));
+	auto api = new API();
+
+	api.putMake("Auckland Airport");
+	api.putMake("Wellington Airport");
+	api.putMake("Christchurch Airport");
+	api.putMake("Queensland Airport");
+	api.putMake("Dunedin Airport");
+	
+	router.registerRestInterface(api);
+
 	auto settings = new HTTPServerSettings;
 	settings.port = 8080;
+
 	listenHTTP(settings, router);
 }
 
