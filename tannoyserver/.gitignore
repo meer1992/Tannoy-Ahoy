@@ -6,3 +6,5 @@ __dummy.html
 tannoyserver
 tannoyserver.exe
 *.dll
+keys/cert.crt
+keys/key.pem
