@@ -34,7 +34,7 @@ Log out and in to reload .profile
   
 
 To build the server:
-Download all the files bar the executable (the ~19mb file), navigate to the directory in a terminal, and run
+Pull the repo, navigate to the 'tannoyserver' directory in a terminal, and run
   ```bash
   dub run
   ```
@@ -43,6 +43,4 @@ Dub will resolve all dependancies and store them in ~/.dub
 Please ensure that you have both .JSON files in the folder as that is what dub uses to resolve dependancies.
 
 
-Instructions on how to query the server are in ./source/app.d
-
-Any issues, either put a request on github or send me a message on FaceBook/email
+Instructions on how to query the server are in ./source/server.d
