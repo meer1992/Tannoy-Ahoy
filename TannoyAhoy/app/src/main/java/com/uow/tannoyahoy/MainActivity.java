@@ -1,7 +1,6 @@
 package com.uow.tannoyahoy;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -13,14 +12,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
@@ -102,6 +98,14 @@ public class MainActivity extends ActionBarActivity {
      **/
     public void loginClicked (MenuItem menuItem) {
         startActivity(new Intent(this,LoginActivity.class));
+    }
+
+    /**
+     * This method is invoked when user clicks make announcement menu option
+     * @param menuItem
+     **/
+    public void makeAnnouncementClicked (MenuItem menuItem) {
+        startActivity(new Intent(this,MakeAnnouncement.class));
     }
 
     /**Gets the message queue when user clicks "update", then calls directUpdateListViewMain*/

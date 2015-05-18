@@ -10,6 +10,14 @@
         android:onClick="loginClicked"
         app:showAsAction="always" />
 
+
+    <item android:id="@+id/action_make_announcement"
+        android:title="@string/title_activity_make_announcement"
+        android:orderInCategory="100"
+        android:icon="@drawable/tannoy_ahoy_make_announcement"
+        android:onClick="makeAnnouncementClicked"
+        app:showAsAction="always" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
