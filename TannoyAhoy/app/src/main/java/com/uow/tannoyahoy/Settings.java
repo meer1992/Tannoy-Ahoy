@@ -11,6 +11,8 @@ public class Settings {
     private long mLocationInterval;
     private long mFastestLocationInterval;
 
+    private long mAnnouncementUpdateInterval;
+
 
     public static Settings getInstance() {
         if (ourInstance == null) {ourInstance = new Settings();}
@@ -39,6 +41,8 @@ public class Settings {
         else {mLocationInterval = mFastestLocationInterval = value;}
     }
 
+    public void setAnnouncementUpdateInterval(long value) {mAnnouncementUpdateInterval = value;}
+
     //legacy code, still might be implemented/useful
     public Boolean hasBackgroundUpdates() {return mHasBackgroundUpdates;}
 
@@ -49,7 +53,9 @@ public class Settings {
 
     public long getFastestLocationUpdateInterval() {return mFastestLocationInterval;}
 
-    public long getReconnectInterval() {return mReconnectInterval; }
+    public long getReconnectInterval() {return mReconnectInterval;}
+
+    public long getAnnouncementUpdateInterval() {return mAnnouncementUpdateInterval;}
 
     //legacy code, still might be implemented/useful
     public void setReconnectInterval(long value) {mReconnectInterval = value; }
@@ -61,5 +67,6 @@ public class Settings {
         mLocationInterval = Constants.DEFAULT_LOCATION_UPDATE_INTERVAL;
         mFastestLocationInterval = Constants.DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL;
         mReconnectInterval = Constants.DEFAULT_RECONNECT_TO_LOCATION_CLIENT_INTERVAL;
+        mAnnouncementUpdateInterval=Constants.DEFAULT_ANNOUNCEMENT_UPDATE_INTERVAL;
     }
 }

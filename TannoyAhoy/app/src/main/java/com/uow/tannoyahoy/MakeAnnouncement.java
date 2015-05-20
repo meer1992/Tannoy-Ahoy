@@ -5,6 +5,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MakeAnnouncement extends ActionBarActivity {
@@ -13,6 +16,23 @@ public class MakeAnnouncement extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_announcement);
+
+        setUpMakeAnnouncementButton();
+    }
+
+    private void setUpMakeAnnouncementButton(){
+        Button makeAnnouncement = (Button) findViewById(R.id.makeAnnouncementBtn);
+
+        makeAnnouncement.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent a = new Intent(v.getContext(), MainActivity.class);
+                a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(a);
+                Toast.makeText(getApplicationContext(), "Announcement made", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

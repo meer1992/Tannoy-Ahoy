@@ -1,20 +1,51 @@
 package com.uow.tannoyahoy;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 
 public class LoginActivity extends ActionBarActivity {
+//    UserLocalStore userLocalStore;
+//    EditText etUsername, etPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+//        etUsername = (EditText) findViewById(R.id.etUsername);
+//        etPassword = (EditText) findViewById(R.id.etPassword);
+        setUpLoginButton();
+
+//        userLocalStore = new UserLocalStore(this);
     }
 
+    private void setUpLoginButton(){
+        Button loginButton = (Button) findViewById(R.id.btLogin);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+//                String username = etUsername.getText().toString();
+//                String password = etPassword.getText().toString();
+//                User user = new User(username, password);
+//                userLocalStore.storeUserData(user);
+//                userLocalStore.setUserLoggedIn(true);
+
+                Intent a = new Intent(v.getContext(), MainActivity.class);
+                a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(a);
+                Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,6 +68,8 @@ public class LoginActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * This method is invoked when user clicks settings menu option

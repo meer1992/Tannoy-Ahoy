@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,6 +25,8 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends ActionBarActivity {
+//    UserLocalStore userLocalStore;
+
     private TannoySpeech theTannoySpeech;
     private LocationBroadcastReceiver locationBroadcastReceiver;
     public final static String LOG_TAG = "TannoyMainActivity";
@@ -54,6 +57,8 @@ public class MainActivity extends ActionBarActivity {
         //Also perform initial setup of activity components
         //such as initialising Text To Speech
         theTannoySpeech = new TannoySpeech(this);
+
+//        userLocalStore = new UserLocalStore(this);
     }
 
     private void setupReceiver() {
@@ -105,7 +110,10 @@ public class MainActivity extends ActionBarActivity {
      * @param menuItem
      **/
     public void makeAnnouncementClicked (MenuItem menuItem) {
+        //add code to check if logged in
+
         startActivity(new Intent(this,MakeAnnouncement.class));
+        Toast.makeText(getApplicationContext(),"Please Login first", Toast.LENGTH_LONG).show();
     }
 
     /**Gets the message queue when user clicks "update", then calls directUpdateListViewMain*/
