@@ -14,4 +14,19 @@
         <item name="background">@color/tannoy_dark_blue</item>
     </style>
 
+    <style name="spinnerItemStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">@color/tannoy_white</item>
+        <item name="android:background">@color/tannoy_dark_blue</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:background">@color/tannoy_dark_blue</item>
+    </style>
+
 </resources>

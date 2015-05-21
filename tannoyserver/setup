@@ -1,0 +1,27 @@
+# This shows the commands used to install DMD and DUB from scratch
+# and includes installation of libraries that vibe.d requires
+
+# Install DMD
+sudo apt-get install g++ gcc-multilib xdg-utils libcurl3
+
+# 32-bit version
+# wget "http://downloads.dlang.org/releases/2.x/2.067.1/dmd_2.067.1-0_i386.deb"
+# sudo dpkg -i dmd_2.067.1-0_i386.deb
+
+# 64-bit version
+wget "http://downloads.dlang.org/releases/2.x/2.067.1/dmd_2.067.1-0_amd64.deb"
+sudo dpkg -i dmd_2.067.1-0_amd64.deb
+
+# Install DUB
+# 32-bit version
+# wget "http://code.dlang.org/files/dub-0.9.23-linux-x86.tar.gz"
+# tar -xvzf dub-0.9.23-linux-x86.tar.gz
+
+# 64-bit version
+wget "http://code.dlang.org/files/dub-0.9.23-linux-x86_64.tar.gz"
+tar -xvzf dub-0.9.23-linux-x86_64.tar.gz
+
+# Install vibe.d dependancies (OpenSSL, Libevent-dev)
+sudo apt-get install libevent-dev libssl-dev
+
+# Done

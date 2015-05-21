@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uow.tannoyahoy.MakeAnnouncement"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/tannoy_white_blue"
+    android:padding="10dp"
+    android:layout_height="match_parent"
+    android:weightSum="1">>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/announcement_server_arrays"
+        android:prompt="@string/server_prompt"
+        android:background="@color/tannoy_light_blue"
+        style="@style/spinnerItemStyle"
+        android:layout_marginBottom="10dp" />
+
+    <EditText
+        android:id="@+id/etMakeAnnouncement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/edit_text"
+        android:textColor="@android:color/primary_text_light"
+        android:layout_weight="1.00"
+        android:gravity="left|top" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Make Announcement"
+        android:id="@+id/makeAnnouncementBtn" />
+
+</LinearLayout>

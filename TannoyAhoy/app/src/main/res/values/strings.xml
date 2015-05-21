@@ -14,7 +14,32 @@
     <string name="action_search">Search</string>
     <string name="main_update">list auto updates every 20 seconds</string>
     <string name="title_activity_login">Login</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_make_announcement">Make Announcement</string>
+
+    <string name="server_prompt">Choose a Tannoy Ahoy! server location</string>
+
+    <string-array name="server_arrays">
+    <item>Select server manually</item>
+    <item>Auckland Airport</item>
+    <item>Britomart Transport Centre</item>
+    <item>Christchurch Airport</item>
+    <item>Dunedin Airport</item>
+    <item>Queensland Airport</item>
+    <item>Waikato University</item>
+    <item>Wellington Airport</item>
+    <item>Wellington Railway Station</item>
+</string-array>
+
+    <string-array name="announcement_server_arrays">
+        <item>For Auckland Airport</item>
+        <item>For Britomart Transport Centre</item>
+        <item>For Christchurch Airport</item>
+        <item>For Dunedin Airport</item>
+        <item>For Queensland Airport</item>
+        <item>For Waikato University</item>
+        <item>For Wellington Airport</item>
+        <item>For Wellington Railway Station</item>
+    </string-array>
+
 </resources>

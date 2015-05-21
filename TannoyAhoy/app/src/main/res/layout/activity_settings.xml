@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:background="@color/tannoy_white_blue"
     android:padding="10dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="false">
 
     <CheckBox
         android:layout_width="match_parent"
@@ -32,16 +33,16 @@
         android:paddingEnd="10dp"
         />
 
-    <EditText
-        android:id="@+id/etLocation"
+    <Spinner
+        android:id="@+id/spinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set location manually"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="40dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="20dp"
-        android:textColor="@color/tannoy_white" />
+        android:entries="@array/server_arrays"
+        android:prompt="@string/server_prompt"
+        style="@style/spinnerItemStyle"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="50dp"
+        android:background="@color/tannoy_light_blue" />
 
     <CheckBox
         android:layout_width="match_parent"
@@ -71,14 +72,11 @@
         android:paddingEnd="10dp"
         />
 
-    <EditText
-        android:id="@+id/etSetUpdateInterval"
+    <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set Update Interval (seconds)"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="40dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="20dp"
-        android:textColor="@color/tannoy_white" />
+        android:id="@+id/seekBar"
+        android:background="@color/tannoy_light_blue"
+        android:layout_marginLeft="50dp" />
+
 </LinearLayout>

@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:singleLine = "true"
         android:textColor="@color/tannoy_white" />
 
     <TextView
@@ -34,7 +35,9 @@
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/tannoy_white" />
+        android:singleLine = "true"
+        android:textColor="@color/tannoy_white"
+        android:password="true"/>
 
     <Button
         android:id="@+id/btLogin"
@@ -45,8 +48,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="web"
+        android:autoLink="email"
         android:textColor="@color/tannoy_white"
-        android:text="Register at http://tannoyahoy.github.io/registration"/>
+        android:text="Email our server admin mitchell.grout@hotmail.com to apply for registration please include verifiable proof of the organisation you work for and that you have authority to make legitimate announcements."/>
 
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.uow.tannoyahoy;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -12,15 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
@@ -28,6 +25,8 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends ActionBarActivity {
+//    UserLocalStore userLocalStore;
+
     private TannoySpeech theTannoySpeech;
     private LocationBroadcastReceiver locationBroadcastReceiver;
     public final static String LOG_TAG = "TannoyMainActivity";
@@ -58,6 +57,8 @@ public class MainActivity extends ActionBarActivity {
         //Also perform initial setup of activity components
         //such as initialising Text To Speech
         theTannoySpeech = new TannoySpeech(this);
+
+//        userLocalStore = new UserLocalStore(this);
     }
 
     private void setupReceiver() {
@@ -102,6 +103,17 @@ public class MainActivity extends ActionBarActivity {
      **/
     public void loginClicked (MenuItem menuItem) {
         startActivity(new Intent(this,LoginActivity.class));
+    }
+
+    /**
+     * This method is invoked when user clicks make announcement menu option
+     * @param menuItem
+     **/
+    public void makeAnnouncementClicked (MenuItem menuItem) {
+        //add code to check if logged in
+
+        startActivity(new Intent(this,MakeAnnouncement.class));
+        Toast.makeText(getApplicationContext(),"Please Login first", Toast.LENGTH_LONG).show();
     }
 
     /**Gets the message queue when user clicks "update", then calls directUpdateListViewMain*/
