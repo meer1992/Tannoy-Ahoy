@@ -1,5 +1,6 @@
 module tannoy.main;
 
+import vibe.vibe;
 import vibe.http.router : URLRouter;
 import vibe.http.server : HTTPServerSettings, listenHTTP;
 import vibe.stream.ssl 	: createSSLContext, SSLContextKind;
@@ -7,6 +8,12 @@ import vibe.web.rest 	: registerRestInterface;
 import std.file 	: exists;
 import tannoy.server 	: API, Admin;
 import core.sys.posix.unistd : fork;
+
+void main(){
+	if (!finalizeCommandLineOptions()) return;
+	if(fork() != 0) return;
+	runEventLoop();
+}
 
 shared static this()
 {
@@ -46,7 +53,7 @@ shared static this()
 	settings.sslContext.usePrivateKeyFile("./keys/key.pem");
 
 	//Run the server as a daemon
-	if(fork() != 0) return;
+//	if(fork() != 0) return;
 	
 	//Begin listening
 	listenHTTP(settings, router);
