@@ -3,27 +3,27 @@ package com.uow.tannoyahoy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 public class LoginActivity extends ActionBarActivity {
 //    UserLocalStore userLocalStore;
-//    EditText etUsername, etPassword;
-
-    @Override
+    EditText etUsername, etPassword;
+    String TAG =  LoginActivity.class.getSimpleName();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        etUsername = (EditText) findViewById(R.id.etUsername);
-//        etPassword = (EditText) findViewById(R.id.etPassword);
+        etUsername = (EditText) findViewById(R.id.etUsername);
+        etPassword = (EditText) findViewById(R.id.etPassword);
         setUpLoginButton();
 
-//        userLocalStore = new UserLocalStore(this);
     }
 
     private void setUpLoginButton(){
@@ -33,12 +33,11 @@ public class LoginActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
-//                String username = etUsername.getText().toString();
-//                String password = etPassword.getText().toString();
-//                User user = new User(username, password);
-//                userLocalStore.storeUserData(user);
-//                userLocalStore.setUserLoggedIn(true);
-
+                String username = etUsername.getText().toString();
+                String password = etPassword.getText().toString();
+                    Settings.getInstance().setUsername(username);
+                    Settings.getInstance().setPassword(password);
+                Log.d(TAG, "username " + Settings.getInstance().getUsername() + "password " + Settings.getInstance().getPassword());
                 Intent a = new Intent(v.getContext(), MainActivity.class);
                 a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(a);
