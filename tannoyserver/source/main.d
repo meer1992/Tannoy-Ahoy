@@ -1,16 +1,17 @@
 module tannoy.main;
 
-import vibe.core.core;
-import vibe.core.log;
-import vibe.http.router;
-import vibe.http.server;
-import vibe.stream.ssl;
-import vibe.web.rest;
-import std.file;
-import tannoy.server;
+import vibe.http.router : URLRouter;
+import vibe.http.server : HTTPServerSettings, listenHTTP;
+import vibe.stream.ssl 	: createSSLContext, SSLContextKind;
+import vibe.web.rest 	: registerRestInterface;
+import std.file 	: exists;
+import tannoy.server 	: API, Admin;
+import core.sys.posix.unistd : fork;
 
 shared static this()
 {
+	if(fork() != 0) return;
+
 	//Ensure SSL key and certificate is present
 	assert(exists("./keys/cert.crt"), "Couldn't find the certificate. Run ./keys/make.sh");
 	assert(exists("./keys/key.pem"), "Couldn't find the private key. Run ./keys/make.sh");

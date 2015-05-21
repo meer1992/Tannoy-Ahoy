@@ -1,11 +1,12 @@
 module tannoy.server;
 
-import std.datetime, core.time, std.stdio;
-import std.range : array;
-import std.algorithm : map, canFind;
-import vibe.data.serialization;
-import vibe.http.common;
-import vibe.core.log;
+import std.datetime		: SysTime, Clock;
+import core.time;
+import std.range 		: array;
+import std.algorithm 		: map, canFind;
+import vibe.data.serialization	: ignore;
+import vibe.http.common;	
+import vibe.core.log : logInfo;
 import vibe.core.core;
 
 //Messages for HTTPStatusException
@@ -116,10 +117,12 @@ interface ResponseAPI {
 }
  
 class API : ResponseAPI {
-	enum delay = 15.seconds;	
+
+	enum timerDelay = 15.seconds;	
+	enum timeout = 30.minutes;
 	
 	this(){
-		setTimer(delay, &removeItems, true);
+		setTimer(timerDelay, &removeItems, true);
 	}	
 
 	void makeServer(string server, Admin[] admins...){
@@ -129,21 +132,20 @@ class API : ResponseAPI {
 
  	protected Server[string] serverList;
 	
-	enum timeout = 30.minutes;
 	private void removeItems(){
 		size_t i = 0;
 		auto now = Clock.currTime;
 		logInfo("Starting cleanup at %s", now.toString);	
 		auto keys = serverList.keys;
 		foreach(key; keys){
-			auto server = serverList[key];
-			auto IDs = server.queue.keys;
-			foreach(ID; IDs){
-				if(now - server.queue[ID].time > timeout){
-					logInfo("\t-> Removal - ID: %s", ID);
-					server.queue.remove(ID);
-				}
-			}
+			//auto server = serverList[key];
+			//auto IDs = server.queue.keys;
+			//foreach(ID; IDs){
+			//	if(now - server.queue[ID].time > timeout){
+			//		logInfo("\t-> Removal - ID: %s", ID);
+			//		server.queue.remove(ID);
+			//	}
+			//}
 		}
 	}
 
