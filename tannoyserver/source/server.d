@@ -6,7 +6,7 @@ import std.range 		: array;
 import std.algorithm 		: map, canFind;
 import vibe.data.serialization	: ignore;
 import vibe.http.common;	
-import vibe.core.log : logInfo;
+import vibe.core.log 		: logInfo;
 import vibe.core.core;
 
 //Messages for HTTPStatusException

@@ -10,6 +10,7 @@ import core.sys.posix.unistd : fork;
 
 shared static this()
 {
+	//Run the server as a daemon
 	if(fork() != 0) return;
 
 	//Ensure SSL key and certificate is present
