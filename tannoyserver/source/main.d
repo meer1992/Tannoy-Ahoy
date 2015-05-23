@@ -11,12 +11,6 @@ import core.sys.posix.unistd : fork;
 
 void main(){
 	if (!finalizeCommandLineOptions()) return;
-	if(fork() != 0) return;
-	runEventLoop();
-}
-
-shared static this()
-{
 
 	//Ensure SSL key and certificate is present
 	assert(exists("./keys/cert.crt"), "Couldn't find the certificate. Run ./keys/make.sh");
@@ -52,9 +46,13 @@ shared static this()
 	settings.sslContext.useCertificateChainFile("./keys/cert.crt");
 	settings.sslContext.usePrivateKeyFile("./keys/key.pem");
 
-	//Run the server as a daemon
-//	if(fork() != 0) return;
+	//Process fork must be placed here due to the SSL key/cert loading
+	auto id = fork();
+	if(id == -1) assert(0, "Failed to fork");
+	if(id != 0) return;
 	
 	//Begin listening
 	listenHTTP(settings, router);
+	lowerPrivileges();
+	runEventLoop();
 }
