@@ -118,7 +118,7 @@ interface ResponseAPI {
  
 class API : ResponseAPI {
 
-	enum timerDelay = 15.seconds;	
+	enum timerDelay = 1.minutes;	
 	enum timeout = 30.minutes;
 	
 	this(){
@@ -138,14 +138,14 @@ class API : ResponseAPI {
 		logInfo("Starting cleanup at %s", now.toString);	
 		auto keys = serverList.keys;
 		foreach(key; keys){
-			//auto server = serverList[key];
-			//auto IDs = server.queue.keys;
-			//foreach(ID; IDs){
-			//	if(now - server.queue[ID].time > timeout){
-			//		logInfo("\t-> Removal - ID: %s", ID);
-			//		server.queue.remove(ID);
-			//	}
-			//}
+			auto server = serverList[key];
+			auto IDs = server.queue.keys;
+			foreach(ID; IDs){
+				if(now - server.queue[ID].time > timeout){
+					logInfo("\t-> Removal - ID: %s", ID);
+					server.queue.remove(ID);
+				}
+			}
 		}
 	}
 
