@@ -61,6 +61,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.uow.tannoyahoy.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ExpandMessageActivity"
+            android:label="@string/title_expand_message_activity"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uow.tannoyahoy.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

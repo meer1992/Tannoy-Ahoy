@@ -15,6 +15,7 @@
     <string name="main_update">list auto updates every 20 seconds</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_expand_message_activity">Message Options</string>
     <string name="title_activity_make_announcement">Make Announcement</string>
 
     <string name="server_prompt">Choose a Tannoy Ahoy! server location</string>

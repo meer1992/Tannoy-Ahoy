@@ -14,24 +14,22 @@
         android:weightSum="1"
         android:id="@+id/linearLayoutMain">
 
-        <Spinner
+        <TextView
+            android:id="@+id/textToExpand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginBottom="10dp"
-            android:id="@+id/headerSpinner" />
-
-
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listViewMain"
-            android:layout_gravity="start"
+            android:layout_marginTop="22dp"
+            android:paddingStart="22dp"
+            android:paddingEnd="11dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
             android:textColor="@color/tannoy_black"
-            android:drawSelectorOnTop="true"
-            android:dividerHeight="10dp"
-            android:divider="#0000" />
+            android:background="@color/tannoy_light_blue"
+            android:elevation="7dp"
+            android:elegantTextHeight="true"
+            android:text="Test!" />
     </LinearLayout>
 
 
@@ -41,33 +39,34 @@
         android:gravity="center|bottom"
         android:orientation="vertical"
         android:columnCount="2"
-        android:rowCount="1"
+        android:rowCount="2"
         android:layout_gravity="bottom"
         android:background="@color/tannoy_dark_blue">
 
         <Button
-            android:id="@+id/buttonUpdate"
+            android:id="@+id/buttonReadAloud"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Update"
+            android:text="Read Aloud"
             android:layout_row="0"
             android:layout_column="0"
             android:layout_gravity="fill_horizontal|bottom"
             android:layout_columnWeight="1"
-            android:onClick="updateListViewMain" />
+            android:onClick="readExpandedMessage" />
 
         <Button
-            android:id="@+id/buttonClear"
+            android:id="@+id/buttonTranslation"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Clear"
+            android:text="Translation"
             android:layout_row="0"
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:onClick="clearListViewMain"
             android:layout_gravity="fill_horizontal" />
+
 
     </GridLayout>
 </LinearLayout>

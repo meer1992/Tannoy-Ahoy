@@ -1,6 +1,7 @@
 package com.uow.tannoyahoy;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
@@ -27,18 +31,23 @@ import org.json.JSONObject;
 public class MainActivity extends ActionBarActivity {
 //    UserLocalStore userLocalStore;
 
-    private TannoySpeech theTannoySpeech;
+    ListView theListview;
+    Spinner theSpinner;
     private LocationBroadcastReceiver locationBroadcastReceiver;
+    private Context thisContext;
     public final static String LOG_TAG = "TannoyMainActivity";
-    private final String strJsonParserExample =
-            "{\"sender\":\"Test Server\",\"queue\":[{\"time\":\"2015-04-07T20:14:05.335358\",\"message\":\"This is a test message\"}" +
-                                                  ",{\"time\":\"2015-04-07T20:14:56.4748071\",\"message\":\"This is some more stuff being added\"}" +
-                                                  ",{\"time\":\"2015-04-07T20:15:26.4748071\",\"message\":\"Singapore Airlines SG03 gate changed from gate 3 to gate 4\"}]}";
+    public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
+
     private final static String strNewJsonExample =
             "{\"name\":\"Test\",\"queue\":{\"128\":{\"time\":\"2015-05-14T16:11:15.0770064\",\"ID\":128,\"message\":\"first message in here\",\"sender\":\"hat\"},\"129\":{\"time\":\"2015-05-14T16:11:15.2080644\",\"ID\":129,\"message\":\"second message in here\",\"sender\":\"hat\"},\"130\":{\"time\":\"2015-05-14T16:11:15.3591318\",\"ID\":130,\"message\":\"third message in here\",\"sender\":\"hat\"},\"131\":{\"time\":\"2015-05-14T16:11:15.5392119\",\"ID\":131,\"message\":\"fourth message in here\",\"sender\":\"hat\"},\"132\":{\"time\":\"2015-05-14T16:11:15.702285\",\"ID\":132,\"message\":\"fifth message in here\",\"sender\":\"hat\"},\"133\":{\"time\":\"2015-05-14T16:11:15.913377\",\"ID\":133,\"message\":\"sixth message in here\",\"sender\":\"hat\"},\"134\":{\"time\":\"2015-05-14T16:11:16.0384326\",\"ID\":134,\"message\":\"seventh and final message in here\",\"sender\":\"hat\"}},\"next_id\":135}";
 
+    private final static String messageJson =
+            "[{\"time\":\"2015-05-23T13:18:26.257385\",\"ID\":0,\"message\":\"foobar\"},{\"time\":\"2015-05-23T15:16:06.482569\",\"ID\":4,\"message\":\"Singapore Airlines SG03 gate changed from gate 3 to gate 4\"},{\"time\":\"2015-05-23T15:16:07.781032\",\"ID\":8,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:04.657521\",\"ID\":1,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:06.875664\",\"ID\":5,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:05.631447\",\"ID\":2,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:07.229624\",\"ID\":6,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:06.157877\",\"ID\":3,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:07.507202\",\"ID\":7,\"message\":\"your message in here\"}]";
+
+    private final static String[] arrayOfLocations = {"Auckland Airport","Britomart Transport Centre","Christchurch Airport","Wellington Airport","Wellington Railway Station"};
+
+
     private JsonParser theMainJsonParser;
-    private static final int SPEECH_REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +64,35 @@ public class MainActivity extends ActionBarActivity {
         startService(new Intent(App.context, BackgroundLocationService.class));
 
         //Also perform initial setup of activity components
-        //such as initialising Text To Speech
-        theTannoySpeech = new TannoySpeech(this);
 
 //        userLocalStore = new UserLocalStore(this);
+
+        //Also perform initial setup of activity components
+        thisContext = this;
+
+        //handle going to another activity and bringing the selected list item with it
+        theListview = (ListView) findViewById(R.id.listViewMain);
+        theListview.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View view,
+                                            int position, long id) {
+                        Object theObject = theListview.getItemAtPosition(position);
+                        String theMessage = theObject.toString();
+                        Log.d(LOG_TAG, "Message is: " + theMessage);
+
+                        Intent intent = new Intent(thisContext, ExpandMessageActivity.class);
+                        intent.putExtra(EXPAND_MESSAGE, theMessage);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        theSpinner = (Spinner) findViewById(R.id.headerSpinner);
+        theSpinner.setAdapter(
+                new ArrayAdapter<String>(this,R.layout.spinner_header_main,arrayOfLocations)
+        );
     }
 
     private void setupReceiver() {
@@ -118,11 +152,46 @@ public class MainActivity extends ActionBarActivity {
 
     /**Gets the message queue when user clicks "update", then calls directUpdateListViewMain*/
     public void updateListViewMain(View theView) {
-        // TODO: Move this action into a singleton instance, and periodically update
-        RequestQueue theQueue = Volley.newRequestQueue(this);
-        //NOTE: 10.0.2.2 is for emulators only.
-        String theURL = "http://10.0.2.2:8080/queue?server=Test";
+        // TODO: Periodically update
+        // TODO: Wrap into a nice method like string s = sendToServer("GETLIST",null)
 
+        //hardcoded string
+        /*
+        theMainJsonParser = new JsonParser(messageJson);
+        directUpdateListViewMain();
+        */
+
+        //RequestQueue theQueue = Volley.newRequestQueue(this);
+
+        // Get the RequestQueue
+        RequestQueue theQueue = TannoyRequestQueueSingleton.getInstance(this.getApplicationContext()).
+                getRequestQueue();
+
+        //NOTE: 10.0.2.2 is for emulators only.
+        //Uses HTTPS
+        String theURL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/queue?server=Auckland%20Airport";
+
+        StringRequest theStringRequest = new StringRequest
+                (Request.Method.GET, theURL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d(LOG_TAG, "HTTP Response is: " + response);
+
+                                theMainJsonParser = new JsonParser(response);
+                                directUpdateListViewMain();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                             public void onErrorResponse(VolleyError error) {
+                                Log.d(LOG_TAG, "HTTP Request didn't work!" + error);
+                            }
+                        });
+
+        theQueue.add(theStringRequest);
+
+        /*
+        //specifically request a JSON object from the server
         JsonObjectRequest theJsonRequest = new JsonObjectRequest
                 (Request.Method.GET, theURL, null, new Response.Listener<JSONObject>() {
 
@@ -137,42 +206,24 @@ public class MainActivity extends ActionBarActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.d("main", "**6**");
                         Log.d(LOG_TAG, "HTTP Request didn't work!" + error);
                     }
                 });
-        //Old code handling a string instead. To be removed later on.
-        /*
-        StringRequest theStringRequest = new StringRequest
-                (Request.Method.GET, theURL,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Log the first 500 characters of the response string.
-                                Log.d(LOG_TAG, "HTTP Response is: " + response);
-
-                                theMainJsonParser = new JsonParser(response);
-                                directUpdateListViewMain();
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d(LOG_TAG, "HTTP Request didn't work!" + error);
-                            }
-                        });
         */
-        theQueue.add(theJsonRequest);
     }
     /**Directly updates the main list of messages when user clicks "update"*/
     public void directUpdateListViewMain(){
         //adapter which essentially calls toString() on a list of objects, then passes it into a listView
         ArrayAdapter<Data> theAdapter;
         theAdapter = new ArrayAdapter<Data>(this,R.layout.list_item_main,theMainJsonParser.getList());
-        ListView theListview = (ListView) findViewById(R.id.listViewMain);
+        //theListview = (ListView) findViewById(R.id.listViewMain);
         theListview.setAdapter(theAdapter);
     }
+
     /**Clears the main list of messages when user clicks "clear"*/
     public void clearListViewMain(View theView) {
-        ListView theListview = (ListView) findViewById(R.id.listViewMain);
+        //theListview = (ListView) findViewById(R.id.listViewMain);
         theListview.setAdapter(null);
     }
 
@@ -191,29 +242,4 @@ public class MainActivity extends ActionBarActivity {
         theTannoySpeech.speak(theTextToRead);
     }*/
 
-    /**Voice recognition component*/
-
-    /*public void getVoice(View theView) {
-        // Create an intent that can start the Speech Recognizer activity
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        // Start the activity, the intent will be populated with the speech text
-        startActivityForResult(intent, SPEECH_REQUEST_CODE);
-    }*/
-
-    /**Activated after google completes voice recognition*/
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //if the speech recognition worked, output to a TextView
-        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
-            List<String> results = data.getStringArrayListExtra(
-                    RecognizerIntent.EXTRA_RESULTS);
-            String spokenText = results.get(0);
-            //find the text box to output to, cast it to TextView, set its text to the output
-            ((TextView)findViewById(R.id.textViewVoiceOut)).setText(spokenText);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }*/
 }

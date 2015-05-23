@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/tannoy_black"
@@ -24,7 +24,7 @@
         android:textColor="@color/tannoy_white" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/tannoy_black"
