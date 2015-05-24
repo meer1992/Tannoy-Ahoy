@@ -25,14 +25,14 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
 
     private static LocationThread ourInstance;
-    private GoogleApiClient googleApiClient;
-    private Boolean threadRunning = false;
-    private Boolean hasStarted = false;
+    private GoogleApiClient mGoogleApiClient;
+    private Boolean mThreadRunning = false;
+    private Boolean mHasStarted = false;
     private static final String TAG = LocationThread.class.getSimpleName();
 
     private LocationThread() { //one-time initialisation
-        hasStarted = false;
-        googleApiClient = new GoogleApiClient.Builder(App.context)
+        mHasStarted = false;
+        mGoogleApiClient = new GoogleApiClient.Builder(App.context)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -45,14 +45,14 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
     }
 
     private void initialise() {
-        threadRunning = true;
+        mThreadRunning = true;
         Log.d(TAG, "onInitialise");
     }
 
     @Override
     public synchronized void start() {
         super.start();
-        hasStarted = true;
+        mHasStarted = true;
         initialise();
         Log.d(TAG, "onStart");
     }
@@ -60,17 +60,17 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
     @Override
     public void run() {
         super.run();
-        if (threadRunning) { //if active thread, attempt to reconnect if not connected
+        if (mThreadRunning) { //if active thread, attempt to reconnect if not connected
             Log.d(TAG, "running");
-            if (!googleApiClient.isConnected() && !googleApiClient.isConnecting()) {
-                googleApiClient.connect();
+            if (!mGoogleApiClient.isConnected() && !mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
                 Log.d(TAG, "attempting to connect");
             }
         }
     }
 
     public void onConnected(Bundle bundle) {
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, createLocationRequest(), this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, createLocationRequest(), this);
 
         //notify anyone who cares of connection success
         Intent connectedIntent = new Intent(Constants.CONNECTED_ACTION);
@@ -95,7 +95,7 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
     @Override
     public void onConnectionSuspended(int i) {
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 
         //connect suspended broadcast
         Intent connectionSuspendedIntent = new Intent(Constants.CONNECTION_SUSPENDED_ACTION);
@@ -111,10 +111,8 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
         //notify anyone who cares of latest position
         Intent locationChangedIntent = new Intent(Constants.LOCATION_CHANGED_ACTION);
-        CurrentLocation.currentLocation = location;
-        CurrentLocation.updateTime = DateFormat.getDateTimeInstance().format(new Date());
-       /* locationChangedIntent.putExtra(Constants.LOCATION_TAG, location);
-        locationChangedIntent.putExtra(Constants.UPDATE_TIME_TAG, DateFormat.getDateTimeInstance().format(new Date()));*/
+        locationChangedIntent.putExtra(Constants.LOCATION_TAG, location);
+        locationChangedIntent.putExtra(Constants.UPDATE_TIME_TAG, DateFormat.getDateTimeInstance().format(new Date()));
         LocalBroadcastManager.getInstance(App.context).sendBroadcast(locationChangedIntent);
 
         yield();
@@ -131,17 +129,17 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
     }
 
     public Boolean isRunning() {
-        return threadRunning;
+        return mThreadRunning;
     }
 
     //turn the thread on or off
     public void setRunning(Boolean newState) {
-        threadRunning = newState;
-        if (threadRunning == false && googleApiClient.isConnected()) {
-            if (googleApiClient.isConnected()) { googleApiClient.disconnect(); }
+        mThreadRunning = newState;
+        if (mThreadRunning == false && mGoogleApiClient.isConnected()) {
+            if (mGoogleApiClient.isConnected()) { mGoogleApiClient.disconnect(); }
         }
         else { initialise(); run(); }
     }
 
-    public Boolean hasStarted() { return hasStarted; }
+    public Boolean hasStarted() { return mHasStarted; }
 }

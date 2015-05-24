@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class BackgroundLocationService extends Service {
 
     private LocationThread thread;
-    private ScheduledExecutorService scheduledExecutor;
+    private ScheduledExecutorService mScheduledExecutor;
     private static final String TAG = BackgroundLocationService.class.getSimpleName();
 
     @Override
@@ -37,9 +37,9 @@ public class BackgroundLocationService extends Service {
         else { thread.start(); }
 
         //Schedule checks for whether a reconnect to client is necessary every X seconds
-        scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
+        mScheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
         Settings settings = Settings.getInstance();
-        scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);
+        mScheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);
 
         Log.d(TAG, "onStart");
         return START_STICKY;
@@ -58,7 +58,7 @@ public class BackgroundLocationService extends Service {
     @Override
     public void onDestroy() {
         thread.setRunning(false); //turn off the thread
-        scheduledExecutor.shutdown(); // stop the scheduler
+        mScheduledExecutor.shutdown(); // stop the scheduler
         super.onDestroy();
         Log.d(TAG, "onDestroy");
 
