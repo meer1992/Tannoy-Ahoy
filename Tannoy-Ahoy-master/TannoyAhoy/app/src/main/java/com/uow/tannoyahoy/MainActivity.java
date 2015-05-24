@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -59,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
         //Log.d(LOG_TAG, strJsonParserExample);
 
         //setup the location-backend
-        locationBroadcastReceiver = new LocationBroadcastReceiver();
+        locationBroadcastReceiver = new LocationBroadcastReceiver(this);
         setupReceiver();
         startService(new Intent(App.context, BackgroundLocationService.class));
 
@@ -96,11 +97,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupReceiver() {
-        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTED_ACTION));
-        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.BOOT_COMPLETED_ACTION));
-        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
-        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
-        registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.LOCATION_CHANGED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.LOCATION_CHANGED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.BOOT_COMPLETED_ACTION));
     }
 
     @Override
