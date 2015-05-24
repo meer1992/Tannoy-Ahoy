@@ -1,5 +1,11 @@
 module tannoy.server;
 
+//Testing
+static import std.file;
+import std.exception 		: ErrnoException;
+import core.stdc.string 	: strerror;
+
+
 import std.datetime		: SysTime, Clock;
 import core.time;
 import std.range 		: array;
@@ -135,14 +141,14 @@ class API : ResponseAPI {
 	private void removeItems(){
 		size_t i = 0;
 		auto now = Clock.currTime;
-		logInfo("Starting cleanup at %s", now.toString);	
+		logInfo_safe("[%s] Starting cleanup", now.toString);	
 		auto keys = serverList.keys;
 		foreach(key; keys){
 			auto server = serverList[key];
 			auto IDs = server.queue.keys;
 			foreach(ID; IDs){
 				if(now - server.queue[ID].time > timeout){
-					logInfo("\t-> Removal - ID: %s", ID);
+					logInfo_safe("\t-> Removal - ID: %s", ID);
 					server.queue.remove(ID);
 				}
 			}
@@ -150,42 +156,42 @@ class API : ResponseAPI {
 	}
 
 	string[] getList(){
-		logInfo(LOG_LIST, time);
+		logInfo_safe(LOG_LIST, time);
 		return serverList.keys;
 	}
 
 	Response[] getQueue(string server){
-		logInfo(LOG_QUEUE, time, server);	
+		logInfo_safe(LOG_QUEUE, time, server);	
 		if(server !in serverList){ 
-			logInfo("\tCouldn't find server");
+			logInfo_safe("\tCouldn't find server");
 			throw new HTTPStatusException(400, ERROR_SERVER); 
 		}
-		logInfo("\tSuccess");
+		logInfo_safe("\tSuccess");
 		return serverList[server].queue.values;
 	}
 
 	bool getValid(string server, string username, string password){
-		logInfo(LOG_VALID, time, server, username);		
+		logInfo_safe(LOG_VALID, time, server, username);		
 		if(server !in serverList){
-			logInfo("\tCouldn't find server");
+			logInfo_safe("\tCouldn't find server");
 			throw new HTTPStatusException(400, ERROR_SERVER);
 		}
 		auto result = serverList[server].inAdmins( Admin(username, password) );
-		logInfo("\tValid: %s", result);		
+		logInfo_safe("\tValid: %s", result);		
 		return result;
 	}
  
 	void putAdd(string server, string message, string username, string password){
-		logInfo(LOG_ADD, time, server, username, message);		
+		logInfo_safe(LOG_ADD, time, server, username, message);		
 		if(server !in serverList){
-			logInfo("\tCouldn't find server");
+			logInfo_safe("\tCouldn't find server");
 			throw new HTTPStatusException(400, ERROR_SERVER); 
 		}	
 		else if(!serverList[server].inAdmins( Admin(username, password) )){
-			logInfo("\tInvalid user/pass");			
+			logInfo_safe("\tInvalid user/pass");			
 			throw new HTTPStatusException(403, ERROR_USER);
 		}
-		logInfo("\tSuccess");
+		logInfo_safe("\tSuccess");
 		auto ID = serverList[server].next_id++;		
 		serverList[server].queue[ID] = Response(ID, message);
 		
@@ -194,28 +200,28 @@ class API : ResponseAPI {
 	void putDie(string username, string password){
 		import std.c.stdlib;		
 		if(username != "admin" || password != "admin"){
-			logInfo("[%s] %s attempted to kill the server, but was rejected", time, username);		 	
+			logInfo_safe("[%s] %s attempted to kill the server, but was rejected", time, username);		 	
 			throw new HTTPStatusException(403, ERROR_USER);
 		}
-		logInfo(LOG_DIE, time, username);
+		logInfo_safe(LOG_DIE, time, username);
 		exit(0);
 	}
 
 	void putRemove(string server, int ID, string username, string password){		
-		logInfo(LOG_REMOVE, time, server, ID, username);
+		logInfo_safe(LOG_REMOVE, time, server, ID, username);
 		if(server !in serverList) { 
-			logInfo("\tCouldn't find server");
+			logInfo_safe("\tCouldn't find server");
 			throw new HTTPStatusException(400, ERROR_SERVER); 
 		}
 		if(!serverList[server].inAdmins( Admin(username, password) )){
-			logInfo("\tInvalid user/pass");			
+			logInfo_safe("\tInvalid user/pass");			
 			throw new HTTPStatusException(403, ERROR_USER);
 		}
 		if(ID !in serverList[server].queue){ 
-			logInfo("\tCouldn't find ID");
+			logInfo_safe("\tCouldn't find ID");
 			throw new HTTPStatusException(400, ERROR_ID); 
 		}
-		logInfo("\tSuccess");
+		logInfo_safe("\tSuccess");
 		serverList[server].queue.remove(ID);
 	}
 }
@@ -229,4 +235,10 @@ string time(){
 string hash(string input){
 	import std.digest.md, std.digest.digest;
 	return (input~"salty").md5Of.toHexString.idup;
+}
+
+void logInfo_safe(T...)(string format, T args){
+//This is temporarily disabled until the logInfo problem is solved
+//	try{ logInfo(format, args); }
+//	catch(ErrnoException ex){ std.file.write("ERROR_CODE", cast(string)strerror(ex.errno)); } //Capture error code
 }
