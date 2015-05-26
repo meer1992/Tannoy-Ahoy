@@ -135,10 +135,11 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
     //turn the thread on or off
     public void setRunning(Boolean newState) {
         isRunning = newState;
-        if (isRunning == false && googleApiClient.isConnected()) {
-            if (googleApiClient.isConnected()) { googleApiClient.disconnect(); }
+        if (isRunning == false && googleApiClient.isConnected()) { googleApiClient.disconnect(); }
+        else {
+            initialise();
+            run();
         }
-        else { initialise(); run(); }
     }
 
     public Boolean hasStarted() { return hasStarted; }

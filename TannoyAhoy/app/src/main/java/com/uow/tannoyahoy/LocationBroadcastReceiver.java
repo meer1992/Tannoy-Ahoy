@@ -87,6 +87,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         else { Log.d(TAG, "Inequalities list is null"); return false; }
     }
     
+    //TO BE REPLACED
     private void tempHardcodeSetup() {
         LinkedList<String> names = new LinkedList<String>();
         names.add("Auckland Aiport");
@@ -157,7 +158,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
                     BigDecimal midPointY = new BigDecimal(tannoyZones.getLocations().get(smallDistanceIndex).getLongitude()).add(deltaY.divide(new BigDecimal(2)));
 
                     //normal to tho the line between the closest point and the current point is deltaY * y - deltaX * x - k = 0
-                    BigDecimal normalConstant = (deltaY.multiply(midPointY).subtract(deltaX.multiply(midPointX)));
+                    BigDecimal normalConstant = (deltaY.multiply(midPointY).add(deltaX.multiply(midPointX)));
                     Inequality normalInequality = new Inequality(deltaX, deltaY, normalConstant);
                     normalInequality.setIsAboveLine(new BigDecimal(tannoyZones.getLocations().get(smallDistanceIndex).getLatitude()), new BigDecimal(tannoyZones.getLocations().get(smallDistanceIndex).getLongitude()));
                     inequalities.add(normalInequality);
@@ -206,14 +207,14 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             BigDecimal xProduct = deltaX.multiply(x);
             BigDecimal yProduct = deltaY.multiply(y);
 
-            BigDecimal result = yProduct.subtract(xProduct).subtract(constant);
+            BigDecimal result = yProduct.add(xProduct).subtract(constant);
             isAboveLine = (result.compareTo(new BigDecimal(0)) > 0); // if the number is greater than 0, it is above the line
         }
 
         public Boolean testInequality(BigDecimal x, BigDecimal y) {
             BigDecimal xProduct = deltaX.multiply(x);
             BigDecimal yProduct = deltaY.multiply(y);
-            BigDecimal result = yProduct.subtract(xProduct).subtract(constant);
+            BigDecimal result = yProduct.add(xProduct).subtract(constant);
             return (isAboveLine == (result.compareTo(new BigDecimal(0)) > 0)); // if on the correct side
         }
 

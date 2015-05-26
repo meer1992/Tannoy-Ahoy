@@ -1,8 +1,12 @@
 package com.uow.tannoyahoy;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -18,12 +22,15 @@ import java.util.concurrent.TimeUnit;
 public class BackgroundLocationService extends Service {
 
     private LocationThread thread;
+    private BroadcastReceiver receiver;
     private ScheduledExecutorService scheduledExecutor;
+    private boolean schedulerStarted = false;
     private static final String TAG = BackgroundLocationService.class.getSimpleName();
 
     @Override
     public void onCreate() {
         super.onCreate();
+        setupReceiver();
         Log.d(TAG, "onCreate");
     }
 
@@ -45,6 +52,29 @@ public class BackgroundLocationService extends Service {
         return START_STICKY;
     }
 
+    private void setupReceiver() {
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Constants.CONNECTED_ACTION)) {
+                    scheduledExecutor.shutdown();
+                    schedulerStarted = false;
+                }
+                else if (intent.getAction().equals(Constants.CONNECTION_FAILED_ACTION) || intent.getAction().equals(Constants.CONNECTION_SUSPENDED_ACTION)) {
+                    if (!schedulerStarted) {
+                        scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
+                        Settings settings = Settings.getInstance();
+                        scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);
+                    }
+                }
+                else { Log.d(TAG, "Received unexpected intent"); }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
+    }
     private Boolean serviceConnected() { //not used atm
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         return ConnectionResult.SUCCESS == resultCode;
