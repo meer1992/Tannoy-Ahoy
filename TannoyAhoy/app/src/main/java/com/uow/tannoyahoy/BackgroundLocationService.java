@@ -57,14 +57,17 @@ public class BackgroundLocationService extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.CONNECTED_ACTION)) {
-                    scheduledExecutor.shutdown();
-                    schedulerStarted = false;
+                    if (schedulerStarted) {
+                        scheduledExecutor.shutdown();
+                        schedulerStarted = false;
+                    }
                 }
                 else if (intent.getAction().equals(Constants.CONNECTION_FAILED_ACTION) || intent.getAction().equals(Constants.CONNECTION_SUSPENDED_ACTION)) {
                     if (!schedulerStarted) {
                         scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
                         Settings settings = Settings.getInstance();
                         scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);
+                        schedulerStarted = true;
                     }
                 }
                 else { Log.d(TAG, "Received unexpected intent"); }

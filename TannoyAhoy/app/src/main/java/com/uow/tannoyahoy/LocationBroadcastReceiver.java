@@ -86,7 +86,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         }
         else { Log.d(TAG, "Inequalities list is null"); return false; }
     }
-    
+
     //TO BE REPLACED
     private void tempHardcodeSetup() {
         LinkedList<String> names = new LinkedList<String>();
