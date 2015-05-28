@@ -1,0 +1,13 @@
+Server:
+	- Fix ErrnoException problem in logInfo_safe function
+
+Client:
+- Retain data in list even if another page is visited
+- Automatic updating
+- Login functionality (Store login details even after activity is closed, restore in activity creation)
+- Check if user/pass is correct using the /valid command
+- Able to add messages (Require login)
+- Able to remove messages (Require login)
+- Update properly depending on selected server (NOT ALWAYS AUCKLAND LMAO)
+- Clean up settings menu (make more aesthetically pleasing)
+- Fix the back button to return to the previous screen, not always back to main activity
