@@ -27,6 +27,12 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -61,6 +67,7 @@ public class MainActivity extends ActionBarActivity {
 
         //setup the location-backend
         setupReceiver();
+        startAutoUpdate();
         startService(new Intent(App.context, BackgroundLocationService.class));
 
         //Also perform initial setup of activity components
@@ -93,6 +100,50 @@ public class MainActivity extends ActionBarActivity {
         theSpinner.setAdapter(
                 new ArrayAdapter<String>(this,R.layout.spinner_header_main,arrayOfLocations)
         );
+    }
+    private void startAutoUpdate()
+    {
+        new Thread(new Runnable() {
+            public void run() {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask()
+                {
+                    @Override
+                    public void run()
+                        {
+                            RequestQueue theQueue = TannoyRequestQueueSingleton.getInstance(thisContext).
+                                    getRequestQueue();
+
+                            //NOTE: 10.0.2.2 is for emulators only.
+                            //Uses HTTPS
+                            String theURL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/queue?server=Auckland%20Airport";
+
+                            StringRequest theStringRequest = new StringRequest
+                                    (Request.Method.GET, theURL,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.d(LOG_TAG, "HTTP Response is: " + response);
+
+                                                    theMainJsonParser = new JsonParser(response);
+                                                    directUpdateListViewMain();
+                                                }
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d(LOG_TAG, "HTTP Request didn't work!" + error);
+                                        }
+                                    });
+
+                            theQueue.add(theStringRequest);
+                            Log.d("Update", "it updated");
+
+                    }
+                }, 0,Settings.getInstance().getAnnouncementUpdateInterval());
+            }
+        }).start();
+
+
     }
 
     private void setupReceiver() {
