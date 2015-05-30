@@ -30,7 +30,6 @@ public class BackgroundLocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        setupReceiver();
         Log.d(TAG, "onCreate");
     }
 
@@ -42,11 +41,11 @@ public class BackgroundLocationService extends Service {
         thread = LocationThread.getInstance();
         if (thread.hasStarted()) { thread.setRunning(true); }
         else { thread.start(); }
-
+        setupReceiver();
         //Schedule checks for whether a reconnect to client is necessary every X seconds
-        scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
+/*        scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
         Settings settings = Settings.getInstance();
-        scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);
+        scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);*/
 
         Log.d(TAG, "onStart");
         return START_STICKY;
@@ -57,17 +56,19 @@ public class BackgroundLocationService extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.CONNECTED_ACTION)) {
-                    if (schedulerStarted) {
+                    if (schedulerStarted) { //if started, stop
                         scheduledExecutor.shutdown();
                         schedulerStarted = false;
+                        Log.d(TAG, "Shutting down scheduled reconnecter");
                     }
                 }
                 else if (intent.getAction().equals(Constants.CONNECTION_FAILED_ACTION) || intent.getAction().equals(Constants.CONNECTION_SUSPENDED_ACTION)) {
-                    if (!schedulerStarted) {
+                    if (!schedulerStarted) { // if stopped, start
                         scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
                         Settings settings = Settings.getInstance();
                         scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);
                         schedulerStarted = true;
+                        Log.d(TAG, "Starting scheduled reconnecter");
                     }
                 }
                 else { Log.d(TAG, "Received unexpected intent"); }
@@ -91,7 +92,7 @@ public class BackgroundLocationService extends Service {
     @Override
     public void onDestroy() {
         thread.setRunning(false); //turn off the thread
-        scheduledExecutor.shutdown(); // stop the scheduler
+        if (schedulerStarted) { scheduledExecutor.shutdown(); } // stop the scheduler
         super.onDestroy();
         Log.d(TAG, "onDestroy");
 
