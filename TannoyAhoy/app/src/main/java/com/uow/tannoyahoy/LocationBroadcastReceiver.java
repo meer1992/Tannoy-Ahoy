@@ -58,7 +58,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         }
         else if (intent.getAction().equals(Constants.LOCATION_CHANGED_ACTION)) {
             Log.d(TAG, intent.toString());
-            tempHardcodeSetup();
+            //tempHardcodeSetup();
             if (CurrentLocation.currentLocation != null) {
                 if (!inequalityTest(new BigDecimal(CurrentLocation.currentLocation.getLatitude()), new BigDecimal(CurrentLocation.currentLocation.getLongitude()))) {
                     new DetermineClosestZone(TannoyZones.getInstance(), CurrentLocation.currentLocation).execute("");
@@ -87,6 +87,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         else { Log.d(TAG, "Inequalities list is null"); return false; }
     }
 
+/*
     //TO BE REPLACED
     private void tempHardcodeSetup() {
         LinkedList<String> names = new LinkedList<String>();
@@ -114,6 +115,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         TannoyZones.getInstance().setLocationNames(names);
         TannoyZones.getInstance().setLocations(locs);
     }
+*/
 
     private class DetermineClosestZone extends AsyncTask<String, String, Integer> {
 
@@ -178,6 +180,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             for (String place : tannoyZones.getLocationNames()) { locationNames.add(place); }
 
             String closestPlace = tannoyZones.getLocationNames().get(smallestDistanceIndex).concat("*");
+            tannoyZones.setClosestZone(closestPlace);
             Log.d(TAG, closestPlace);
             locationNames.set(smallestDistanceIndex, closestPlace);
 

@@ -16,6 +16,8 @@ public final class Constants {
     public static final String LOCATION_TAG = "LOCATION";
     public static final String UPDATE_TIME_TAG = "UPDATE_TIME_TAG";
 
+    public static final String URL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/queue?server=";
+
     //default data
     public static final long DEFAULT_LOCATION_UPDATE_INTERVAL = 30000; //20 seconds
     public static final long DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL = DEFAULT_LOCATION_UPDATE_INTERVAL /2;

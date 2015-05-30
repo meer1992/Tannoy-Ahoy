@@ -40,9 +40,10 @@ public class MainActivity extends ActionBarActivity {
 
     ListView theListview;
     Spinner theSpinner;
-    private LocationBroadcastReceiver  locationBroadcastReceiver = new LocationBroadcastReceiver(this);
+    private LocationBroadcastReceiver  locationBroadcastReceiver;
     private Context thisContext;
-    public final static String LOG_TAG = "TannoyMainActivity";
+    private String currentSelectedZone = TannoyZones.getInstance().getClosestZone();
+    private final static String TAG = MainActivity.class.getSimpleName();
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
 
     private final static String strNewJsonExample =
@@ -51,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
     private final static String messageJson =
             "[{\"time\":\"2015-05-23T13:18:26.257385\",\"ID\":0,\"message\":\"foobar\"},{\"time\":\"2015-05-23T15:16:06.482569\",\"ID\":4,\"message\":\"Singapore Airlines SG03 gate changed from gate 3 to gate 4\"},{\"time\":\"2015-05-23T15:16:07.781032\",\"ID\":8,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:04.657521\",\"ID\":1,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:06.875664\",\"ID\":5,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:05.631447\",\"ID\":2,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:07.229624\",\"ID\":6,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:06.157877\",\"ID\":3,\"message\":\"your message in here\"},{\"time\":\"2015-05-23T15:16:07.507202\",\"ID\":7,\"message\":\"your message in here\"}]";
 
-    private final static String[] arrayOfLocations = {"Auckland Airport","Britomart Transport Centre","Christchurch Airport","Wellington Airport","Wellington Railway Station"};
+    //private final static String[] arrayOfLocations = {"Auckland Airport","Britomart Transport Centre","Christchurch Airport","Wellington Airport","Wellington Railway Station"};
 
 
     private JsonParser theMainJsonParser;
@@ -63,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         //example of json call (can use a straight json object or a string formated to Json standard
         //theMainJsonParser = new JsonParser(strNewJsonExample);
-        //Log.d(LOG_TAG, strJsonParserExample);
+        //Log.d(TAG, strJsonParserExample);
 
         //setup the location-backend
         setupReceiver();
@@ -87,7 +88,7 @@ public class MainActivity extends ActionBarActivity {
                                             int position, long id) {
                         Object theObject = theListview.getItemAtPosition(position);
                         String theMessage = theObject.toString();
-                        Log.d(LOG_TAG, "Message is: " + theMessage);
+                        Log.d(TAG, "Message is: " + theMessage);
 
                         Intent intent = new Intent(thisContext, ExpandMessageActivity.class);
                         intent.putExtra(EXPAND_MESSAGE, theMessage);
@@ -98,8 +99,19 @@ public class MainActivity extends ActionBarActivity {
 
         theSpinner = (Spinner) findViewById(R.id.headerSpinner);
         theSpinner.setAdapter(
-                new ArrayAdapter<String>(this,R.layout.spinner_header_main,arrayOfLocations)
+                new ArrayAdapter<String>(this, R.layout.spinner_header_main, TannoyZones.getInstance().getLocationNames())
         );
+        theSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentSelectedZone = TannoyZones.getInstance().getLocationNames().get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
     private void startAutoUpdate()
     {
@@ -116,14 +128,15 @@ public class MainActivity extends ActionBarActivity {
 
                             //NOTE: 10.0.2.2 is for emulators only.
                             //Uses HTTPS
-                            String theURL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/queue?server=Auckland%20Airport";
+                            String theFilter = currentSelectedZone.replace(" ", "%20");
+                            String theURL = Constants.URL + theFilter;
 
                             StringRequest theStringRequest = new StringRequest
                                     (Request.Method.GET, theURL,
                                             new Response.Listener<String>() {
                                                 @Override
                                                 public void onResponse(String response) {
-                                                    Log.d(LOG_TAG, "HTTP Response is: " + response);
+                                                    Log.d(TAG, "HTTP Response is: " + response);
 
                                                     theMainJsonParser = new JsonParser(response);
                                                     directUpdateListViewMain();
@@ -131,7 +144,7 @@ public class MainActivity extends ActionBarActivity {
                                             }, new Response.ErrorListener() {
                                         @Override
                                         public void onErrorResponse(VolleyError error) {
-                                            Log.d(LOG_TAG, "HTTP Request didn't work!" + error);
+                                            Log.d(TAG, "HTTP Request didn't work!" + error);
                                         }
                                     });
 
@@ -147,11 +160,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupReceiver() {
-        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTED_ACTION));
-        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
-        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
-        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.LOCATION_CHANGED_ACTION));
-        LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.BOOT_COMPLETED_ACTION));
+        if (locationBroadcastReceiver == null) {
+            locationBroadcastReceiver = new LocationBroadcastReceiver(this);
+            LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTED_ACTION));
+            LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
+            LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
+            LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.LOCATION_CHANGED_ACTION));
+            LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.BOOT_COMPLETED_ACTION));
+        }
     }
 
     @Override
@@ -220,14 +236,15 @@ public class MainActivity extends ActionBarActivity {
 
         //NOTE: 10.0.2.2 is for emulators only.
         //Uses HTTPS
-        String theURL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/queue?server=Auckland%20Airport";
+        String theFilter = currentSelectedZone.replace(" ", "%20");
+        String theURL = Constants.URL + theFilter;
 
         StringRequest theStringRequest = new StringRequest
                 (Request.Method.GET, theURL,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Log.d(LOG_TAG, "HTTP Response is: " + response);
+                                Log.d(TAG, "HTTP Response is: " + response);
 
                                 theMainJsonParser = new JsonParser(response);
                                 directUpdateListViewMain();
@@ -235,7 +252,7 @@ public class MainActivity extends ActionBarActivity {
                         }, new Response.ErrorListener() {
                             @Override
                              public void onErrorResponse(VolleyError error) {
-                                Log.d(LOG_TAG, "HTTP Request didn't work!" + error);
+                                Log.d(TAG, "HTTP Request didn't work!" + error);
                             }
                         });
 
@@ -248,7 +265,7 @@ public class MainActivity extends ActionBarActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(LOG_TAG, "HTTP Response is: " + response);
+                        Log.d(TAG, "HTTP Response is: " + response);
 
                         theMainJsonParser = new JsonParser(response);
                         directUpdateListViewMain();
@@ -258,7 +275,7 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("main", "**6**");
-                        Log.d(LOG_TAG, "HTTP Request didn't work!" + error);
+                        Log.d(TAG, "HTTP Request didn't work!" + error);
                     }
                 });
         */
