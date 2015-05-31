@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
 
     ListView theListview;
     Spinner theSpinner;
-    private LocationBroadcastReceiver  locationBroadcastReceiver;
+    private LocationBroadcastReceiver locationBroadcastReceiver;
     private Context thisContext;
     private String currentSelectedZone = TannoyZones.getInstance().getClosestZone();
     private final static String TAG = MainActivity.class.getSimpleName();
@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
         setupReceiver();
         startAutoUpdate();
         startService(new Intent(App.context, BackgroundLocationService.class));
-
+        if (TannoyZones.getInstance().getBoundaries() == null) { new DetermineTannoyBoundaries(TannoyZones.getInstance()).execute(""); }
         //Also perform initial setup of activity components
 
 //        userLocalStore = new UserLocalStore(this);

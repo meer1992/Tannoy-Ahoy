@@ -21,10 +21,10 @@ import java.util.LinkedList;
 public class LocationBroadcastReceiver extends BroadcastReceiver {
     //private SharedPreferences mPrefs;
     private static final String TAG = LocationBroadcastReceiver.class.getSimpleName();
-    private LinkedList<Inequality> mInequalityList;
-    private Activity mMainActivity;
+/*    private LinkedList<Inequality> mInequalityList;*/
+    private Activity mainActivity;
 
-    public LocationBroadcastReceiver(Activity activity) { mMainActivity = activity;}
+    public LocationBroadcastReceiver(Activity activity) { mainActivity = activity;}
 
     //filters for intents produced by the locationService
     public void onReceive(Context context, Intent intent) {
@@ -59,34 +59,70 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         else if (intent.getAction().equals(Constants.LOCATION_CHANGED_ACTION)) {
             Log.d(TAG, intent.toString());
             //tempHardcodeSetup();
-            if (CurrentLocation.currentLocation != null) {
+/*            if (CurrentLocation.currentLocation != null) {
                 if (!inequalityTest(new BigDecimal(CurrentLocation.currentLocation.getLatitude()), new BigDecimal(CurrentLocation.currentLocation.getLongitude()))) {
                     new DetermineClosestZone(TannoyZones.getInstance(), CurrentLocation.currentLocation).execute("");
                 }
             }
-            else { Log.d(TAG, "Current location is null"); }
+            else { Log.d(TAG, "Current location is null"); }*/
+            new DetermineClosestPlace(TannoyZones.getInstance()).execute("");
+
         }
         else {
             Log.d(TAG, "Received unexpected intent " + intent.toString());
         }
     }
 
-    private Boolean inequalityTest(BigDecimal xPos, BigDecimal yPos) {
-        //get request from server to populate lists in TannoyZones
-        //sanitise the keys from the server
-        if (mInequalityList != null) {
-            for (Inequality inequality : mInequalityList) {
-                if (!inequality.testInequality(xPos, yPos)) {
-                    Log.d(TAG, "failed inequality test");
-                    return false;
+    private class DetermineClosestPlace extends AsyncTask<String, String, LinkedList<String>> {
+        private TannoyZones tannoyZones;
+
+        public DetermineClosestPlace(TannoyZones zones) { tannoyZones = zones; }
+
+        @Override
+        protected LinkedList<String> doInBackground(String... params) {
+            if (!inequalityTest(tannoyZones.getBoundaries().get(tannoyZones.getClosestZoneIndex()), new BigDecimal(CurrentLocation.currentLocation.getLatitude()), new BigDecimal(CurrentLocation.currentLocation.getLongitude()))) {
+                for (int i = 0; i < tannoyZones.getBoundaries().size(); i++) {
+                    if (i != tannoyZones.getClosestZoneIndex()) {
+                        if (inequalityTest(tannoyZones.getBoundaries().get(i), new BigDecimal(CurrentLocation.currentLocation.getLatitude()), new BigDecimal(CurrentLocation.currentLocation.getLongitude()))) {
+                            tannoyZones.setClosestZoneIndex(i);
+                            Log.d(TAG, "Changed closest place to " + i);
+                            break;
+                        }
+                    }
                 }
             }
-            Log.d(TAG, "passed inequality test");
-            return true;
+            else { Log.d(TAG, "Location unchanged"); }
+            LinkedList locationNames = (LinkedList<String>)tannoyZones.getLocationNames().clone();
+            String closestPlace = tannoyZones.getLocationNames().get(tannoyZones.getClosestZoneIndex()).concat("*");
+            locationNames.set(tannoyZones.getClosestZoneIndex(), closestPlace);
+            return locationNames;
         }
-        else { Log.d(TAG, "Inequalities list is null"); return false; }
-    }
 
+        @Override
+        protected void onPostExecute(LinkedList<String> locationNames) {
+            super.onPostExecute(locationNames);
+            //update the spinner
+            Spinner locationSpinner = (Spinner)mainActivity.findViewById(R.id.headerSpinner);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(mainActivity, R.layout.spinner_header_main, locationNames);
+            locationSpinner.setAdapter(spinnerArrayAdapter);
+        }
+
+        private Boolean inequalityTest(LinkedList<Inequality> inequalityList, BigDecimal xPos, BigDecimal yPos) {
+            //get request from server to populate lists in TannoyZones
+            //sanitise the keys from the server
+            if (inequalityList != null) {
+                for (Inequality inequality : inequalityList) {
+                    if (!inequality.testInequality(xPos, yPos)) {
+                        Log.d(TAG, "failed inequality test");
+                        return false;
+                    }
+                }
+                Log.d(TAG, "passed inequality test");
+                return true;
+            }
+            else { Log.d(TAG, "Inequalities list is null"); return false; }
+        }
+    }
 /*
     //TO BE REPLACED
     private void tempHardcodeSetup() {
@@ -117,7 +153,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     }
 */
 
-    private class DetermineClosestZone extends AsyncTask<String, String, Integer> {
+/*    private class DetermineClosestZone extends AsyncTask<String, String, Integer> {
 
         private TannoyZones tannoyZones;
         private Location currentLocation;
@@ -221,5 +257,5 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             return (isAboveLine == (result.compareTo(new BigDecimal(0)) > 0)); // if on the correct side
         }
 
-    }
+    }*/
 }

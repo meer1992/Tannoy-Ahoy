@@ -13,7 +13,9 @@ public class TannoyZones {
     //parallel lists
     private LinkedList<Location> locations;
     private LinkedList<String> locationNames;
+    private LinkedList<LinkedList<Inequality>> boundaries;
     private String closestZone;
+    private int closestZoneIndex;
 
     public static TannoyZones getInstance() {
         if (ourInstance == null) { ourInstance = new TannoyZones(); }
@@ -51,6 +53,7 @@ public class TannoyZones {
         locations.add(loc); //Welling Railway
 
         closestZone = locationNames.get(0);
+        closestZoneIndex = 0;
     }
 
     public void setLocations(LinkedList<Location> locs) { locations = locs; }
@@ -64,4 +67,12 @@ public class TannoyZones {
     public String getClosestZone() { return  closestZone; }
 
     public void setClosestZone(String place) { closestZone = place; }
+
+    public LinkedList<LinkedList<Inequality>> getBoundaries() { return boundaries; }
+
+    public void setBoundaries(LinkedList<LinkedList<Inequality>> boundaries1) { boundaries = boundaries1; }
+
+    public void setClosestZoneIndex(int closestZoneIndex1) { closestZoneIndex = closestZoneIndex1; }
+
+    public int getClosestZoneIndex() { return closestZoneIndex; }
 }
