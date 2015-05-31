@@ -23,8 +23,16 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = LocationBroadcastReceiver.class.getSimpleName();
 /*    private LinkedList<Inequality> mInequalityList;*/
     private Activity mainActivity;
+    private static LocationBroadcastReceiver ourInstance;
 
-    public LocationBroadcastReceiver(Activity activity) { mainActivity = activity;}
+    private LocationBroadcastReceiver() {}
+
+    public static LocationBroadcastReceiver getInstance() {
+        if (ourInstance == null) { ourInstance = new LocationBroadcastReceiver(); }
+        return ourInstance;
+    }
+
+    public void setRootActivity(Activity activity) { mainActivity = activity; }
 
     //filters for intents produced by the locationService
     public void onReceive(Context context, Intent intent) {
@@ -101,10 +109,10 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         @Override
         protected void onPostExecute(LinkedList<String> locationNames) {
             super.onPostExecute(locationNames);
-            //update the spinner
-            Spinner locationSpinner = (Spinner)mainActivity.findViewById(R.id.headerSpinner);
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(mainActivity, R.layout.spinner_header_main, locationNames);
-            locationSpinner.setAdapter(spinnerArrayAdapter);
+                //update the spinner
+                Spinner locationSpinner = (Spinner) mainActivity.findViewById(R.id.headerSpinner);
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(mainActivity, R.layout.spinner_header_main, locationNames);
+                locationSpinner.setAdapter(spinnerArrayAdapter);
         }
 
         private Boolean inequalityTest(LinkedList<Inequality> inequalityList, BigDecimal xPos, BigDecimal yPos) {

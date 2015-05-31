@@ -40,9 +40,9 @@ public class MainActivity extends ActionBarActivity {
 
     ListView theListview;
     Spinner theSpinner;
-    private LocationBroadcastReceiver locationBroadcastReceiver;
+    private LocationBroadcastReceiver locationBroadcastReceiver = LocationBroadcastReceiver.getInstance();
     private Context thisContext;
-    private String currentSelectedZone = TannoyZones.getInstance().getClosestZone();
+    private String currentSelectedZone = TannoyZones.getInstance().getLocationNames().get(TannoyZones.getInstance().getClosestZoneIndex());
     private final static String TAG = MainActivity.class.getSimpleName();
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
 
@@ -160,14 +160,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupReceiver() {
-        if (locationBroadcastReceiver == null) {
-            locationBroadcastReceiver = new LocationBroadcastReceiver(this);
+            LocationBroadcastReceiver.getInstance().setRootActivity(this);
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTED_ACTION));
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.LOCATION_CHANGED_ACTION));
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.BOOT_COMPLETED_ACTION));
-        }
     }
 
     @Override

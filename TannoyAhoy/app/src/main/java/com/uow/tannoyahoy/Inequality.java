@@ -1,5 +1,7 @@
 package com.uow.tannoyahoy;
 
+import android.util.Log;
+
 import java.math.BigDecimal;
 
 /**

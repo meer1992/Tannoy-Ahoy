@@ -1,6 +1,7 @@
 package com.uow.tannoyahoy;
 
 import android.location.Location;
+import android.util.Log;
 
 import java.util.LinkedList;
 
@@ -14,7 +15,7 @@ public class TannoyZones {
     private LinkedList<Location> locations;
     private LinkedList<String> locationNames;
     private LinkedList<LinkedList<Inequality>> boundaries;
-    private String closestZone;
+    //private String closestZone;
     private int closestZoneIndex;
 
     public static TannoyZones getInstance() {
@@ -36,37 +37,41 @@ public class TannoyZones {
         loc.setLongitude(174.784879);
         locations.add(loc); //auckland
 
+        loc = new Location("");
         loc.setLatitude(-36.843330);
-        loc.setLongitude( 174.766897);
+        loc.setLongitude(174.766897);
         locations.add(loc); //Britomart
 
+        loc = new Location("");
         loc.setLatitude(-41.326712);
         loc.setLongitude(174.807385);
         locations.add(loc); //Christchurch
 
+        loc = new Location("");
         loc.setLatitude(-43.484660);
         loc.setLongitude(172.537080);
         locations.add(loc);//Wellington Airport
 
+        loc = new Location("");
         loc.setLatitude(-41.279067);
         loc.setLongitude(174.780195);
         locations.add(loc); //Welling Railway
 
-        closestZone = locationNames.get(0);
+        //closestZone = locationNames.get(0);
         closestZoneIndex = 0;
     }
 
-    public void setLocations(LinkedList<Location> locs) { locations = locs; }
+    //public void setLocations(LinkedList<Location> locs) { locations = locs; }
 
-    public void setLocationNames(LinkedList<String> names) { locationNames = names; }
+    //public void setLocationNames(LinkedList<String> names) { locationNames = names; }
 
     public LinkedList<String> getLocationNames() { return locationNames; }
 
     public LinkedList<Location> getLocations() { return locations; }
 
-    public String getClosestZone() { return  closestZone; }
+    //public String getClosestZone() { return  closestZone; }
 
-    public void setClosestZone(String place) { closestZone = place; }
+    //public void setClosestZone(String place) { closestZone = place; }
 
     public LinkedList<LinkedList<Inequality>> getBoundaries() { return boundaries; }
 

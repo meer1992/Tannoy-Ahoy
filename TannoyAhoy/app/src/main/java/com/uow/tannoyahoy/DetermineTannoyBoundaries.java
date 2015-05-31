@@ -26,11 +26,12 @@ public class DetermineTannoyBoundaries extends AsyncTask<String, String, Integer
 
     @Override
     protected Integer doInBackground(String... params) {
-        //initialise impossible values
         for (int closestPlaceIndex = 0; closestPlaceIndex < tannoyZones.getLocations().size(); closestPlaceIndex++) {
             LinkedList<Inequality> inequalityList = new LinkedList<Inequality>();
             for (int i = 0; i < tannoyZones.getLocations().size(); i++) {
                 if (i != closestPlaceIndex) {
+                    Log.d("test", i + "location:" + " lat: " + tannoyZones.getLocations().get(i).getLatitude() + " long: " +tannoyZones.getLocations().get(i).getLongitude());
+                    Log.d("test", closestPlaceIndex + "location:" + " lat: " + tannoyZones.getLocations().get(closestPlaceIndex).getLatitude() + " long: " +tannoyZones.getLocations().get(closestPlaceIndex).getLongitude());
                     BigDecimal deltaX = new BigDecimal(tannoyZones.getLocations().get(i).getLatitude() - tannoyZones.getLocations().get(closestPlaceIndex).getLatitude());
                     BigDecimal deltaY = new BigDecimal(tannoyZones.getLocations().get(i).getLongitude() - tannoyZones.getLocations().get(closestPlaceIndex).getLongitude());
 
@@ -40,10 +41,12 @@ public class DetermineTannoyBoundaries extends AsyncTask<String, String, Integer
                     //normal to tho the line between the closest point and the current point is deltaY * y + deltaX * x - k = 0
                     BigDecimal normalConstant = (deltaY.multiply(midPointY).add(deltaX.multiply(midPointX)));
                     Inequality normalInequality = new Inequality(deltaX, deltaY, normalConstant);
+                    Log.d("test", "deltaX" + deltaX.toString() + " deltaY" + deltaY.toString() + " constant" + normalConstant.toString());
                     normalInequality.setIsAboveLine(new BigDecimal(tannoyZones.getLocations().get(closestPlaceIndex).getLatitude()), new BigDecimal(tannoyZones.getLocations().get(closestPlaceIndex).getLongitude()));
                     inequalityList.add(normalInequality);
                 }
             }
+            //Log.d("inequalityList length:", "" + inequalityList.size());
             inequalities.add(inequalityList);
         }
         tannoyZones.setBoundaries(inequalities);
