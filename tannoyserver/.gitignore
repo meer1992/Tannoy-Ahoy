@@ -9,3 +9,4 @@ tannoyserver.exe
 keys/cert.crt
 keys/key.pem
 log
+err

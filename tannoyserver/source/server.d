@@ -1,7 +1,7 @@
 module tannoy.server;
 
 //Testing
-static import std.file;
+import std.stdio;
 import std.exception 		: ErrnoException;
 import core.stdc.string 	: strerror;
 
@@ -9,7 +9,7 @@ import core.stdc.string 	: strerror;
 import std.datetime		: SysTime, Clock;
 import core.time;
 import std.range 		: array;
-import std.algorithm 		: map, canFind;
+import std.algorithm 		: map, canFind, sort;
 import vibe.data.serialization	: ignore;
 import vibe.http.common;	
 import vibe.core.log 		: logInfo;
@@ -124,7 +124,7 @@ interface ResponseAPI {
  
 class API : ResponseAPI {
 
-	enum timerDelay = 1.minutes;	
+	enum timerDelay = 10.seconds;//1.minutes;	
 	enum timeout = 30.minutes;
 	
 	this(){
@@ -167,7 +167,7 @@ class API : ResponseAPI {
 			throw new HTTPStatusException(400, ERROR_SERVER); 
 		}
 		logInfo_safe("\tSuccess");
-		return serverList[server].queue.values;
+		return serverList[server].queue.values.sort!"a.time>b.time".array;
 	}
 
 	bool getValid(string server, string username, string password){
@@ -238,7 +238,6 @@ string hash(string input){
 }
 
 void logInfo_safe(T...)(string format, T args){
-//This is temporarily disabled until the logInfo problem is solved
-//	try{ logInfo(format, args); }
-//	catch(ErrnoException ex){ std.file.write("ERROR_CODE", cast(string)strerror(ex.errno)); } //Capture error code
+	try{ logInfo(format, args); }
+	catch(ErrnoException ex){ stderr.writefln("ERROR CODE: %s\nMESSAGE: %s", ex.errno, cast(string)strerror(ex.errno)); } //Capture error code
 }
