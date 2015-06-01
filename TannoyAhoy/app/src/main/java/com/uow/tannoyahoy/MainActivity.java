@@ -42,8 +42,8 @@ public class MainActivity extends ActionBarActivity {
     Spinner theSpinner;
     private LocationBroadcastReceiver locationBroadcastReceiver = LocationBroadcastReceiver.getInstance();
     private Context thisContext;
-    private String currentSelectedZone = TannoyZones.getInstance().getLocationNames().get(TannoyZones.getInstance().getClosestZoneIndex());
-    private final static String TAG = MainActivity.class.getSimpleName();
+    private String currentSelectedZone;
+    private final static String TAG = "TannoyMain";
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
 
     private final static String strNewJsonExample =
@@ -101,6 +101,9 @@ public class MainActivity extends ActionBarActivity {
         theSpinner.setAdapter(
                 new ArrayAdapter<String>(this, R.layout.spinner_header_main, TannoyZones.getInstance().getLocationNames())
         );
+
+        currentSelectedZone = TannoyZones.getInstance().getLocationNames().get(TannoyZones.getInstance().getClosestZoneIndex());
+
         theSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -115,6 +118,8 @@ public class MainActivity extends ActionBarActivity {
 
             }
         });
+
+
     }
     private void startAutoUpdate()
     {

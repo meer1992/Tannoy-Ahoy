@@ -18,6 +18,8 @@ public final class Constants {
 
     public static final String URL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/queue?server=";
 
+    public static final String ADDURL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/add?";
+
     //default data
     public static final long DEFAULT_LOCATION_UPDATE_INTERVAL = 30000; //20 seconds
     public static final long DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL = DEFAULT_LOCATION_UPDATE_INTERVAL /2;
@@ -25,7 +27,7 @@ public final class Constants {
     public static final Boolean DEFAULT_HAS_BACKGROUND_LOCATION_UPDATES = false;
     public static final Boolean DEFAULT_HAS_LOCATION_NOTIFICATIONS = false;
 
-    public static final long DEFAULT_ANNOUNCEMENT_UPDATE_INTERVAL = 15000; //10 seconds
+    public static final long DEFAULT_ANNOUNCEMENT_UPDATE_INTERVAL = 30000; //20 seconds
 
     //class cannot be initialised
     public Constants () { throw new AssertionError();}

@@ -9,14 +9,11 @@
     android:weightSum="1">>
 
     <Spinner
-        android:id="@+id/spinner1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/announcement_server_arrays"
-        android:prompt="@string/server_prompt"
-        android:background="@color/tannoy_light_blue"
-        style="@style/spinnerItemStyle"
-        android:layout_marginBottom="10dp" />
+        android:gravity="start"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/announceHeaderSpinner" />
 
     <Button
         android:layout_width="match_parent"
