@@ -7,6 +7,7 @@ public class Settings {
     private static Settings ourInstance;
     private Boolean mHasBackgroundUpdates;
     private Boolean mHasBackgroundAlerts;
+    private Boolean loggedIn;
     private long mReconnectInterval;
     private long mLocationInterval;
     private long mFastestLocationInterval;
@@ -38,6 +39,10 @@ public class Settings {
 
     public void setLocationInterval(long value) {mLocationInterval = value;}
 
+    public void setLoggedIn(boolean value) {
+        loggedIn = value;
+    }
+
     public void setUsername(String username) {this.username = username;}
 
     public void setPassword(String password) {this.password = password;}
@@ -61,6 +66,8 @@ public class Settings {
 
     public long getReconnectInterval() {return mReconnectInterval;}
 
+    public Boolean getLoggedIn()  {return loggedIn;}
+
     public String getUsername() {return username;}
 
     public String getPassword() {return password;}
@@ -78,5 +85,6 @@ public class Settings {
         mFastestLocationInterval = Constants.DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL;
         mReconnectInterval = Constants.DEFAULT_RECONNECT_TO_LOCATION_CLIENT_INTERVAL;
         mAnnouncementUpdateInterval=Constants.DEFAULT_ANNOUNCEMENT_UPDATE_INTERVAL;
+        loggedIn = Constants.DEFAULT_LOGGEDIN;
     }
 }

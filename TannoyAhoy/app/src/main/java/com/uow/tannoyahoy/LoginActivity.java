@@ -37,6 +37,7 @@ public class LoginActivity extends ActionBarActivity {
                 String password = etPassword.getText().toString();
                     Settings.getInstance().setUsername(username);
                     Settings.getInstance().setPassword(password);
+                    Settings.getInstance().setLoggedIn(true);
                 Log.d(TAG, "username " + Settings.getInstance().getUsername() + "password " + Settings.getInstance().getPassword());
                 Intent a = new Intent(v.getContext(), MainActivity.class);
                 a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

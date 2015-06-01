@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="5dp"
-        android:text="Let Tannoy Ahoy! use your GPS location"
+        android:text="Let Tannoy Ahoy! use your GPS location \n(* indicates closest location)"
         android:textColor="@color/tannoy_black"
         android:background="@color/tannoy_light_blue"
         android:id="@+id/checkBox"

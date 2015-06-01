@@ -161,6 +161,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_make_announcement);
+
+        if (Settings.getInstance().getLoggedIn() == true) {
+            item.setEnabled(true);
+            item.getIcon().setAlpha(255);
+        } else {
+            // disabled
+            item.getIcon().setAlpha(130);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
@@ -188,15 +202,24 @@ public class MainActivity extends ActionBarActivity {
         startActivity(new Intent(this,LoginActivity.class));
     }
 
+    public void logoutClicked (MenuItem menuitem) {
+        Settings.getInstance().setLoggedIn(false);
+        Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     /**
      * This method is invoked when user clicks make announcement menu option
      * @param menuItem
      **/
     public void makeAnnouncementClicked (MenuItem menuItem) {
         //add code to check if logged in
-
-        startActivity(new Intent(this,MakeAnnouncement.class));
-        Toast.makeText(getApplicationContext(),"Please Login first", Toast.LENGTH_LONG).show();
+        if (Settings.getInstance().getLoggedIn() == true) {
+            startActivity(new Intent(this, MakeAnnouncement.class));
+        } else {
+            // disabled
+            Toast.makeText(getApplicationContext(), "Please Login first", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**Gets the message queue when user clicks "update", then calls directUpdateListViewMain*/

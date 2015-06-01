@@ -10,6 +10,12 @@
         android:onClick="loginClicked"
         app:showAsAction="always" />
 
+    <item android:id="@+id/action_logout"
+        android:title="@string/title_activity_logout"
+        android:orderInCategory="100"
+        android:icon="@drawable/tannoy_ahoy_logout"
+        android:onClick="logoutClicked"
+        app:showAsAction="always" />
 
     <item android:id="@+id/action_make_announcement"
         android:title="@string/title_activity_make_announcement"

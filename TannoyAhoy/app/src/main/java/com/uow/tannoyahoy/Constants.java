@@ -27,6 +27,8 @@ public final class Constants {
     public static final Boolean DEFAULT_HAS_BACKGROUND_LOCATION_UPDATES = false;
     public static final Boolean DEFAULT_HAS_LOCATION_NOTIFICATIONS = false;
 
+    public static final Boolean DEFAULT_LOGGEDIN = false;
+
     public static final long DEFAULT_ANNOUNCEMENT_UPDATE_INTERVAL = 30000; //20 seconds
 
     //class cannot be initialised
