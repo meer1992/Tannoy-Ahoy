@@ -42,7 +42,8 @@ public class MainActivity extends ActionBarActivity {
     Spinner theSpinner;
     private LocationBroadcastReceiver locationBroadcastReceiver = LocationBroadcastReceiver.getInstance();
     private Context thisContext;
-    private String currentSelectedZone;
+    private String currentSelectedZone = "";
+    private String theFilter = "";
     private final static String TAG = "TannoyMain";
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
 
@@ -217,7 +218,7 @@ public class MainActivity extends ActionBarActivity {
 
         //NOTE: 10.0.2.2 is for emulators only.
         //Uses HTTPS
-        String theFilter = currentSelectedZone.replace(" ", "%20");
+        theFilter = currentSelectedZone.replace(" ", "%20");
         String theURL = Constants.URL + theFilter;
 
         StringRequest theStringRequest = new StringRequest
