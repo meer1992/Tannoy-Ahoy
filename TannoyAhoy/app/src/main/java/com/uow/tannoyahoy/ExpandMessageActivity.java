@@ -51,14 +51,6 @@ public class ExpandMessageActivity extends ActionBarActivity {
         }
     }
 
-    /**
-     * This method is invoked when user clicks settings menu option
-     * @param menuItem
-     **/
-    public void settingsClicked (MenuItem menuItem) {
-        startActivity(new Intent(this,SettingsActivity.class));
-    }
-
     /**Reads aloud the expanded message when the user clicks "read aloud"*/
     public void readExpandedMessage(View theView) {
         //get the text from the edit_message box, then turn it into a string
