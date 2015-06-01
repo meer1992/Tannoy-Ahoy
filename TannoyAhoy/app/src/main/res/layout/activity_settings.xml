@@ -31,17 +31,8 @@
         android:id="@+id/checkBox"
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
+        android:checked="true"
         />
-
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/server_arrays"
-        android:prompt="@string/server_prompt"
-        style="@style/spinnerItemStyle"
-        android:layout_marginBottom="5dp"
-        android:background="@color/tannoy_light_blue" />
 
     <CheckBox
         android:layout_width="match_parent"
@@ -54,6 +45,7 @@
         android:id="@+id/checkBox3"
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
+        android:checked="true"
         />
 
     <CheckBox
@@ -69,12 +61,14 @@
         android:layout_alignParentStart="true"
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
+        android:checked="true"
         />
 
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
-        android:background="@color/tannoy_light_blue" />
+        android:background="@color/tannoy_light_blue"
+        android:layout_marginLeft="35dp" />
 
 </LinearLayout>
