@@ -66,17 +66,17 @@ public class MainActivity extends ActionBarActivity {
         //theMainJsonParser = new JsonParser(strNewJsonExample);
         //Log.d(TAG, strJsonParserExample);
 
+        //Also perform initial setup of activity components
+        thisContext = this;
+
         //setup the location-backend
         setupReceiver();
         startAutoUpdate();
-        startService(new Intent(App.context, BackgroundLocationService.class));
+        startService(new Intent(thisContext, BackgroundLocationService.class));
         if (TannoyZones.getInstance().getBoundaries() == null) { new DetermineTannoyBoundaries(TannoyZones.getInstance()).execute(""); }
         //Also perform initial setup of activity components
 
 //        userLocalStore = new UserLocalStore(this);
-
-        //Also perform initial setup of activity components
-        thisContext = this;
 
         //handle going to another activity and bringing the selected list item with it
         theListview = (ListView) findViewById(R.id.listViewMain);
@@ -105,6 +105,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentSelectedZone = TannoyZones.getInstance().getLocationNames().get(position);
+
+                updateListViewMain(null);
+                Log.d("MainSpinnerUpdate", "updated");
             }
 
             @Override
@@ -123,33 +126,8 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void run()
                         {
-                            RequestQueue theQueue = TannoyRequestQueueSingleton.getInstance(thisContext).
-                                    getRequestQueue();
-
-                            //NOTE: 10.0.2.2 is for emulators only.
-                            //Uses HTTPS
-                            String theFilter = currentSelectedZone.replace(" ", "%20");
-                            String theURL = Constants.URL + theFilter;
-
-                            StringRequest theStringRequest = new StringRequest
-                                    (Request.Method.GET, theURL,
-                                            new Response.Listener<String>() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    Log.d(TAG, "HTTP Response is: " + response);
-
-                                                    theMainJsonParser = new JsonParser(response);
-                                                    directUpdateListViewMain();
-                                                }
-                                            }, new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Log.d(TAG, "HTTP Request didn't work!" + error);
-                                        }
-                                    });
-
-                            theQueue.add(theStringRequest);
-                            Log.d("Update", "it updated");
+                            updateListViewMain(null);
+                            Log.d("AutoUpdate", "it auto updated");
 
                     }
                 }, 0,Settings.getInstance().getAnnouncementUpdateInterval());
