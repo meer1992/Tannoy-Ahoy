@@ -25,7 +25,7 @@ public class BackgroundLocationService extends Service {
     private BroadcastReceiver receiver;
     private ScheduledExecutorService scheduledExecutor;
     private boolean schedulerStarted = false;
-    private static final String TAG = BackgroundLocationService.class.getSimpleName();
+    private static final String TAG = "BackLocSvc";
 
     @Override
     public void onCreate() {

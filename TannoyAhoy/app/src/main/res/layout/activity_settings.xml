@@ -41,7 +41,6 @@
         android:prompt="@string/server_prompt"
         style="@style/spinnerItemStyle"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="50dp"
         android:background="@color/tannoy_light_blue" />
 
     <CheckBox
@@ -61,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Auto update announcements list (default is 20 seconds)"
+        android:text="Auto update announcements list (default is 10 seconds)"
         android:layout_marginBottom="5dp"
         android:textColor="@color/tannoy_black"
         android:background="@color/tannoy_light_blue"
@@ -76,7 +75,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
-        android:background="@color/tannoy_light_blue"
-        android:layout_marginLeft="50dp" />
+        android:background="@color/tannoy_light_blue" />
 
 </LinearLayout>
