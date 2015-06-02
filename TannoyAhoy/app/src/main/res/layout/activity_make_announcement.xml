@@ -20,7 +20,9 @@
         android:layout_height="wrap_content"
         android:text="Record Voice"
         android:onClick="recogniseVoice"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:textColor="@color/tannoy_white"
+        android:background="@drawable/custom_button"/>
 
     <EditText
         android:id="@+id/etMakeAnnouncement"
@@ -35,6 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Make Announcement"
-        android:id="@+id/makeAnnouncementBtn" />
+        android:id="@+id/makeAnnouncementBtn"
+        android:textColor="@color/tannoy_white"
+        android:background="@drawable/custom_button"/>
 
 </LinearLayout>
