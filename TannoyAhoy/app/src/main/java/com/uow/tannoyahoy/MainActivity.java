@@ -70,6 +70,7 @@ public class MainActivity extends ActionBarActivity {
         //Also perform initial setup of activity components
         thisContext = this;
 
+
         //setup the location-backend
         setupReceiver();
         startAutoUpdate();
@@ -156,7 +157,14 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.action_logout);
+        MenuItem item2 = menu.findItem(R.id.action_login);
 
+        if (Settings.getInstance().getLoggedIn() == false) {
+            item.setVisible(false);
+        } else {
+            item2.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
