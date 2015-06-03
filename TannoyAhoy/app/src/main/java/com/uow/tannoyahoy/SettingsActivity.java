@@ -2,8 +2,11 @@ package com.uow.tannoyahoy;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
 
 
 public class SettingsActivity extends ActionBarActivity {
@@ -36,5 +39,25 @@ public class SettingsActivity extends ActionBarActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
     }
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch(view.getId()) {
+            case R.id.checkBox2:
+                if (checked) { Log.d("CheckBox", "This was checked in the settings activity");                              }
+                // Put some meat on the sandwich
+                else {
+                    Log.d("CheckBox", "This was unchecked in the settings activity"); }
+                // Remove the meat
+                break;
+
+
+        }
+    }
+
+
 }

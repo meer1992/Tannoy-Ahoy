@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -44,6 +45,9 @@ public class MainActivity extends ActionBarActivity {
     private Context thisContext;
     private String currentSelectedZone = "";
     private String theFilter = "";
+    static private  boolean updateThreadStarted = false;
+    private static String previousResponse = "[]";
+    private static String currentResponse = "[]";
     private final static String TAG = "TannoyMain";
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
 
@@ -69,6 +73,8 @@ public class MainActivity extends ActionBarActivity {
 
         //Also perform initial setup of activity components
         thisContext = this;
+
+
 
 
         //setup the location-backend
@@ -125,21 +131,58 @@ public class MainActivity extends ActionBarActivity {
     }
     private void startAutoUpdate()
     {
-        new Thread(new Runnable() {
+       /* new Thread(new Runnable() {
             public void run() {
-                Timer timer = new Timer();
+               /* Timer timer = new Timer();
                 timer.schedule(new TimerTask()
                 {
                     @Override
                     public void run()
                         {
-                            updateListViewMain(null);
-                            Log.d("AutoUpdate", "it auto updated");
+
 
                     }
                 }, 0,Settings.getInstance().getAnnouncementUpdateInterval());
+                new Timer().scheduleAtFixedRate(new TimerTask() {
+                    public void run() {
+                        updateListViewMain(null);
+                        Log.d("AutoUpdate", "it auto updated");
+                    }
+                }, 0, Settings.getInstance().getAnnouncementUpdateInterval());//put here time 1000 milliseconds=1 second
             }
-        }).start();
+        }).start();*/
+
+        if(updateThreadStarted == false) {
+            updateThreadStarted = true;
+
+            ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+            exec.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    // do stuff
+                    updateListViewMain(null);
+                    if (currentResponse.equals(previousResponse))
+                    {
+                    }
+                    else
+                    {
+                        Log.d("AutoUpdate", "put notification here");
+                    }
+                    previousResponse = currentResponse;
+
+
+
+                Log.d("AutoUpdate","it auto updated");
+            }
+        }, 0, Settings.getInstance().getAnnouncementUpdateInterval(), TimeUnit.MILLISECONDS);
+
+        }
+        else
+        {
+            Log.d("AutoUpdate", "It shouldn't update");
+
+        }
+
 
 
     }
@@ -216,6 +259,8 @@ public class MainActivity extends ActionBarActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
+
+
     /**
      * This method is invoked when user clicks make announcement menu option
      * @param menuItem
@@ -229,6 +274,9 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "Please Login first", Toast.LENGTH_LONG).show();
         }
     }
+
+
+
 
     /**Gets the message queue when user clicks "update", then calls directUpdateListViewMain*/
     public void updateListViewMain(View theView) {
@@ -251,13 +299,17 @@ public class MainActivity extends ActionBarActivity {
         //Uses HTTPS
         theFilter = currentSelectedZone.replace(" ", "%20");
         String theURL = Constants.URL + theFilter;
+        Log.d("VolleyGet", "it was called");
 
         StringRequest theStringRequest = new StringRequest
                 (Request.Method.GET, theURL,
                         new Response.Listener<String>() {
+
                             @Override
                             public void onResponse(String response) {
                                 Log.d(TAG, "HTTP Response is: " + response);
+                                Log.d("VolleyGet", "inside the response");
+                                currentResponse = response;
 
                                 theMainJsonParser = new JsonParser(response);
                                 directUpdateListViewMain();
