@@ -52,7 +52,7 @@ public class Settings {
         else {mLocationInterval = mFastestLocationInterval = value;}
     }
 
-    public void setAnnouncementUpdateInterval(long value) {mAnnouncementUpdateInterval = value;}
+    public void setAnnouncementUpdateInterval(long value) {mAnnouncementUpdateInterval = value*1000;}
 
     //legacy code, still might be implemented/useful
     public Boolean hasBackgroundUpdates() {return mHasBackgroundUpdates;}

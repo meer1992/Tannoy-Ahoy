@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -62,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
     private String theFilter = "";
     static private  boolean updateThreadStarted = false;
     private static String previousResponse = "[]";
+    private static boolean autoUpdate = false;
     private static String currentResponse = "[]";
     private final static String TAG = "TannoyMain";
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
@@ -167,6 +169,8 @@ public class MainActivity extends ActionBarActivity {
             }
         }).start();*/
 
+
+
         if(updateThreadStarted == false) {
             updateThreadStarted = true;
 
@@ -177,14 +181,16 @@ public class MainActivity extends ActionBarActivity {
 
                     // do stuff
                     if(Settings.getInstance().hasBackgroundUpdates()) {
+                        autoUpdate = true;
                         updateListViewMain(null);
+                        autoUpdate = false;
                         Log.d("AutoUpdate", "it auto updated");
                         if(Settings.getInstance().hasBackgroundAlerts()) {
                             if (currentResponse.equals(previousResponse)) {
                             } else {
-
-                                Log.d("AutoUpdate", "put notification here");
                                 showNotification();
+                                Log.d("AutoUpdate", "put notification here");
+                                Log.d("AutoUpdate",Long.toString(Settings.getInstance().getAnnouncementUpdateInterval()));
 
                             }
                             previousResponse = currentResponse;
@@ -371,6 +377,9 @@ public class MainActivity extends ActionBarActivity {
                                 Log.d(TAG, "HTTP Response is: " + response);
                                 Log.d("VolleyGet", "inside the response");
                                 currentResponse = response;
+                                if(autoUpdate == false) {
+                                previousResponse = currentResponse;
+                                }
 
                                 theMainJsonParser = new JsonParser(response);
                                 directUpdateListViewMain();

@@ -7,9 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 
 public class SettingsActivity extends ActionBarActivity {
+    private SeekBar seekBar;
+    private TextView textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +21,35 @@ public class SettingsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_settings);
         addListenerUpdateCheck();
         addListenerNotificationCheck();
+        addListenerSeekBar();
+    }
+    public void addListenerSeekBar()
+    {
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        textview = (TextView) findViewById(R.id.textView1);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                textview.setText("Update rate (sec): " + (progress+10));
+                Settings.getInstance().setAnnouncementUpdateInterval(progress+10);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+        });
     }
     public void addListenerUpdateCheck()
     {
