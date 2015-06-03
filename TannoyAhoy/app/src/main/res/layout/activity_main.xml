@@ -51,13 +51,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update Announcements"
-            android:textColor="@color/tannoy_white"
+            android:textColor="@color/tannoy_black"
             android:layout_row="0"
             android:layout_column="0"
             android:layout_gravity="fill_horizontal|bottom"
             android:layout_columnWeight="1"
             android:onClick="updateListViewMain"
-            android:background="@drawable/custom_button"/>
+            android:background="@drawable/custom_button"
+            android:layout_margin="5dp" />
 
         <Button
             android:id="@+id/buttonClear"
@@ -65,13 +66,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear"
-            android:textColor="@color/tannoy_white"
+            android:textColor="@color/tannoy_black"
             android:layout_row="0"
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:onClick="clearListViewMain"
             android:layout_gravity="fill_horizontal"
-            android:background="@drawable/custom_button"/>
+            android:background="@drawable/custom_button"
+            android:layout_margin="5dp" />
 
     </GridLayout>
 </LinearLayout>
