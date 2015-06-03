@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:clickable="false">
 
-    <CheckBox
+    <CheckBox style="@style/CustomCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -20,7 +20,7 @@
         android:paddingEnd="10dp"
         />
 
-    <CheckBox
+    <CheckBox style="@style/CustomCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -34,7 +34,7 @@
         android:checked="true"
         />
 
-    <CheckBox
+    <CheckBox style="@style/CustomCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -46,9 +46,10 @@
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
         android:checked="true"
+
         />
 
-    <CheckBox
+    <CheckBox style="@style/CustomCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -64,7 +65,7 @@
         android:checked="true"
         />
 
-    <SeekBar
+    <SeekBar style="@style/CustomSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"

@@ -29,4 +29,39 @@
         <item name="android:background">@color/tannoy_dark_blue</item>
     </style>
 
+    <style name="CustomCheckBox">
+        <item name="android:theme">@style/CheckBoxAppTheme</item>
+    </style>
+
+    <style name="CheckBoxAppTheme">
+        <item name="android:colorAccent">
+            @color/tannoy_dark_blue
+        </item>
+        <item name="android:colorControlNormal">
+            @color/tannoy_dark_blue
+        </item>
+        <item name="android:colorControlHighlight">
+            @color/tannoy_grey
+        </item>
+        <item name="android:colorControlActivated">
+            @color/tannoy_dark_blue
+        </item>
+    </style>
+
+    <style name="CustomSpinner">
+        <item name="android:theme">@style/SpinnerAppTheme</item>
+    </style>
+
+    <style name="SpinnerAppTheme">
+
+        <item name="android:colorControlNormal">
+            @color/tannoy_dark_blue
+        </item>
+        <item name="android:colorControlHighlight">
+            @color/tannoy_grey
+        </item>
+        <item name="android:colorControlActivated">
+            @color/tannoy_dark_blue
+        </item>
+    </style>
 </resources>

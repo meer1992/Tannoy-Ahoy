@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.36"
+        android:layout_weight="0.84"
         android:background="@color/tannoy_light_blue"
         android:gravity="center|center_vertical"
         android:layout_marginTop="30dp">
@@ -31,15 +31,33 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:text="Team members:\nAnthony Meehan \nIsa Ibrahim \nJordan Schroder \nMitchell Grout \nShashwat Sinha"
+            android:text="Team members:"
             android:id="@+id/textView2"
             android:textColor="@color/tannoy_black"
-            android:layout_weight="1"
+            android:layout_weight="0.34"
+            android:textSize="20dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="20dp"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Anthony Meehan    Isa Ibrahim    Jordan Schroder    Mitchell Grout    Shashwat Sinha"
+            android:id="@+id/textView10"
+            android:textColor="@color/tannoy_black"
+            android:layout_weight="0.21"
             android:textSize="20dp"
             android:paddingEnd="5dp"
             android:paddingStart="20dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -52,7 +70,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="  Tannoy Ahoy v1.24  "
+            android:text="  Tannoy Ahoy v1.31  "
             android:textColor="@color/tannoy_black"
             android:background="@color/tannoy_light_blue"
             android:id="@+id/textView3"
