@@ -1,10 +1,16 @@
 package com.uow.tannoyahoy;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -25,9 +31,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 
 import org.json.JSONObject;
 
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -159,20 +174,26 @@ public class MainActivity extends ActionBarActivity {
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+
                     // do stuff
-                    updateListViewMain(null);
-                    if (currentResponse.equals(previousResponse))
-                    {
+                    if(Settings.getInstance().hasBackgroundUpdates()) {
+                        updateListViewMain(null);
+                        Log.d("AutoUpdate", "it auto updated");
+                        if(Settings.getInstance().hasBackgroundAlerts()) {
+                            if (currentResponse.equals(previousResponse)) {
+                            } else {
+
+                                Log.d("AutoUpdate", "put notification here");
+                                showNotification();
+
+                            }
+                            previousResponse = currentResponse;
+                        }
                     }
-                    else
-                    {
-                        Log.d("AutoUpdate", "put notification here");
-                    }
-                    previousResponse = currentResponse;
 
 
 
-                Log.d("AutoUpdate","it auto updated");
+
             }
         }, 0, Settings.getInstance().getAnnouncementUpdateInterval(), TimeUnit.MILLISECONDS);
 
@@ -185,6 +206,46 @@ public class MainActivity extends ActionBarActivity {
 
 
 
+    }
+    /*
+    private void sendUpdateNotification()
+    {
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// Sets an ID for the notification, so it can be updated
+        int notifyID = 1;
+         NotificationCompat mNotifyBuilder = new NotificationCompat.Builder(this)
+                .setContentTitle("New Message")
+                .setContentText("You've received new messages.")
+                .setSmallIcon(R.drawable.tannoy_ahoy_icon).build();
+
+// Start of a loop that processes data and then notifies the user
+
+        mNotifyBuilder.setContentText(currentText)
+                .setNumber(++numMessages);
+        // Because the ID remains unchanged, the existing notification is
+        // updated.
+        mNotificationManager.notify(
+                notifyID,
+                mNotifyBuilder.build());
+    }*/
+    public void showNotification() {
+        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+
+        Bitmap icon = BitmapFactory.decodeResource(thisContext.getResources(),
+                R.drawable.tannoy_ahoy_icon);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setTicker("ticker")
+                .setLargeIcon(icon)
+                .setSmallIcon(R.drawable.tannoy_ahoy_icon)
+                .setContentTitle("New messages available!")
+                .setContentText("New messages are avalible for the location you are at!")
+                .setContentIntent(pi)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notification);
     }
 
     private void setupReceiver() {

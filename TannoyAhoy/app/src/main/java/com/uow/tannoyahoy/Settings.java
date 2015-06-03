@@ -60,6 +60,10 @@ public class Settings {
     //legacy code, still might be implemented/useful
     public Boolean hasBackgroundAlerts() {return  mHasBackgroundAlerts;}
 
+    public void setHasBackgroundUpdates(boolean value){mHasBackgroundUpdates = value;}
+
+    public void setHasBackgroundAlerts(boolean value){mHasBackgroundAlerts = value;}
+
     public long getLocationUpdateInterval() {return mLocationInterval;}
 
     public long getFastestLocationUpdateInterval() {return mFastestLocationInterval;}

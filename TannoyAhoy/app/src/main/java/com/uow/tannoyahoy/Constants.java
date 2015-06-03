@@ -24,8 +24,8 @@ public final class Constants {
     public static final long DEFAULT_LOCATION_UPDATE_INTERVAL = 30000; //20 seconds
     public static final long DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL = DEFAULT_LOCATION_UPDATE_INTERVAL /2;
     public static final long DEFAULT_RECONNECT_TO_LOCATION_CLIENT_INTERVAL = DEFAULT_LOCATION_UPDATE_INTERVAL;
-    public static final Boolean DEFAULT_HAS_BACKGROUND_LOCATION_UPDATES = false;
-    public static final Boolean DEFAULT_HAS_LOCATION_NOTIFICATIONS = false;
+    public static final Boolean DEFAULT_HAS_BACKGROUND_LOCATION_UPDATES = true;
+    public static final Boolean DEFAULT_HAS_LOCATION_NOTIFICATIONS = true;
 
     public static final Boolean DEFAULT_LOGGEDIN = false;
 

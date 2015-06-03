@@ -15,6 +15,52 @@ public class SettingsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        addListenerUpdateCheck();
+        addListenerNotificationCheck();
+    }
+    public void addListenerUpdateCheck()
+    {
+        CheckBox yourCheckBox = (CheckBox) findViewById (R.id.checkBox2);
+
+        yourCheckBox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                if (((CheckBox) v).isChecked()) {
+                    Log.d("help", "set background updates to true");
+                    Settings.getInstance().setHasBackgroundUpdates(true);
+                    //Case 1
+                } else {
+                    Log.d("help", "set background updates to false");
+                    Settings.getInstance().setHasBackgroundUpdates(false);
+                }
+                //case 2
+
+            }
+        });
+    }
+    public void addListenerNotificationCheck()
+    {
+        CheckBox yourCheckBox = (CheckBox) findViewById (R.id.checkBox3);
+
+        yourCheckBox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                if (((CheckBox) v).isChecked()) {
+                    Log.d("help", "set background alerts to true");
+                    Settings.getInstance().setHasBackgroundAlerts(true);
+                    //Case 1
+                } else {
+                    Log.d("help", "set background alerts to false");
+                    Settings.getInstance().setHasBackgroundAlerts(false);
+                }
+                //case 2
+
+            }
+        });
     }
 
 
