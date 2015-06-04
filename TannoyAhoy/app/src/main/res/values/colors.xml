@@ -4,7 +4,8 @@
     <color name="tannoy_white">#FFFFFF</color>
     <color name="tannoy_black">#000000</color>
     <color name="tannoy_white_blue">#1565C0</color>
-    <color name="tannoy_semi_white">#ff81b8f4</color>
+    <color name="tannoy_semi_white">#ffaccdfd</color>
+    <color name="tannoy_semi_blue">#ffa4c5f5</color>
     <color name="tannoy_grey">#d3d3d3</color>
     <color name="tannoy_light_blue">#BBDEFB</color>
 </resources>

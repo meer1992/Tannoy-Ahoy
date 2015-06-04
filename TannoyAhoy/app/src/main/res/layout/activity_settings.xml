@@ -54,7 +54,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Auto update announcements list (default is 10 seconds)"
-        android:layout_marginBottom="5dp"
         android:textColor="@color/tannoy_black"
         android:background="@color/tannoy_light_blue"
         android:id="@+id/checkBox2"
@@ -71,12 +70,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
         android:background="@color/tannoy_light_blue"
-        android:max="3590"
-        android:layout_marginLeft="35dp" />
+        android:max="3590" />
     <TextView
         android:id="@+id/textView1"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:textColor="@color/tannoy_black"
@@ -85,7 +83,6 @@
         android:layout_alignParentStart="true"
         android:text = "Update rate (sec): 10"
         android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:layout_marginTop="14dp" />
+        android:paddingEnd="10dp" />
 
 </LinearLayout>

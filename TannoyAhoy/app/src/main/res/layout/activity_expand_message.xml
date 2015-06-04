@@ -55,8 +55,7 @@
             android:layout_gravity="fill_horizontal|bottom"
             android:layout_columnWeight="1"
             android:onClick="readExpandedMessage"
-            android:background="@drawable/custom_button"
-            android:layout_margin="5dp" />
+            android:background="@drawable/custom_button" />
 
         <Button
             android:id="@+id/buttonTranslation"
@@ -70,8 +69,7 @@
             android:layout_columnWeight="1"
             android:onClick="clearListViewMain"
             android:layout_gravity="fill_horizontal"
-            android:background="@drawable/custom_button"
-            android:layout_margin="5dp" />
+            android:background="@drawable/custom_button" />
 
 
     </GridLayout>
