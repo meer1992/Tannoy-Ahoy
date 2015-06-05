@@ -25,10 +25,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="5dp"
-        android:text="Let Tannoy Ahoy! use your GPS location \n(* indicates closest location)"
+        android:text="Let Tannoy Ahoy! update announcements based on proximity \n(* indicates closest location)"
         android:textColor="@color/tannoy_black"
         android:background="@color/tannoy_light_blue"
-        android:id="@+id/checkBox"
+        android:id="@+id/checkBoxProximityUpdates"
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
         android:checked="true"
@@ -84,5 +84,12 @@
         android:text = "Update rate (sec): 10"
         android:paddingStart="10dp"
         android:paddingEnd="10dp" />
+
+    <Spinner style="@style/CustomSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/powerSpinner"
+        android:background="@color/tannoy_light_blue" />
 
 </LinearLayout>

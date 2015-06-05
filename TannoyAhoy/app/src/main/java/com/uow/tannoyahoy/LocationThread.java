@@ -25,6 +25,7 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
 
     private static LocationThread ourInstance;
+    private int locationPriority = Constants.POWER_PRIORITIES[0]; // DEFAULT TO HIGH POWER
     private GoogleApiClient googleApiClient;
     private Boolean isRunning = false;
     private Boolean hasStarted = false;
@@ -71,7 +72,6 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
     public void onConnected(Bundle bundle) {
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, createLocationRequest(), this);
-
         //notify anyone who cares of connection success
         Intent connectedIntent = new Intent(Constants.CONNECTED_ACTION);
         LocalBroadcastManager.getInstance(App.context).sendBroadcast(connectedIntent);
@@ -121,11 +121,17 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
     private LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
-        Settings settings = Settings.getInstance();
-        mLocationRequest.setInterval(settings.getLocationUpdateInterval());
-        mLocationRequest.setFastestInterval(settings.getFastestLocationUpdateInterval());
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        if (locationPriority != 0) {
+            Settings settings = Settings.getInstance();
+            mLocationRequest.setInterval(settings.getLocationUpdateInterval());
+            mLocationRequest.setFastestInterval(settings.getFastestLocationUpdateInterval());
+            mLocationRequest.setPriority(locationPriority);
+            Log.d(TAG, "createLocationRequest");
+            return mLocationRequest;
+        }
+        Log.d(TAG, "returning empty location request");
         return mLocationRequest;
+
     }
 
     public Boolean isRunning() {
@@ -143,4 +149,11 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
     }
 
     public Boolean hasStarted() { return hasStarted; }
+
+    public void updateLocationRequest(int priority) {
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        locationPriority = priority;
+        if (priority != 0) { LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, createLocationRequest(), this); }
+        yield();
+    }
 }

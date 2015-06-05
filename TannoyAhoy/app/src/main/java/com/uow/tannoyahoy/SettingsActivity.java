@@ -1,19 +1,25 @@
 package com.uow.tannoyahoy;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
 public class SettingsActivity extends ActionBarActivity {
     private SeekBar seekBar;
     private TextView textview;
+    private Spinner powerSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +28,60 @@ public class SettingsActivity extends ActionBarActivity {
         addListenerUpdateCheck();
         addListenerNotificationCheck();
         addListenerSeekBar();
+        addListenerPowerSpinner();
+        addListenerProximityCheck();
+    }
+
+    public void addListenerProximityCheck() {
+        CheckBox proximityCheckBox = (CheckBox) findViewById(R.id.checkBoxProximityUpdates);
+        proximityCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    Log.d("help", "location based change");
+                    Settings.getInstance().setHasProximityUpdates(true);
+                    //Case 1
+                } else {
+                    Log.d("help", "no location based change");
+                    Settings.getInstance().setHasProximityUpdates(false);
+                }
+            }
+        });
+
+    }
+
+    public void addListenerPowerSpinner() {
+        powerSpinner = (Spinner) findViewById(R.id.powerSpinner);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_header_main, Constants.POWER_OPTIONS);
+        powerSpinner.setAdapter(spinnerArrayAdapter);
+
+        powerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent powerSettingsIntent = new Intent(Constants.POWER_SETTINGS_CHANGED_ACTION);
+                powerSettingsIntent.putExtra(Constants.POWER_SETTING_POSITION_TAG, Constants.POWER_PRIORITIES[position]);
+                LocalBroadcastManager.getInstance(App.context).sendBroadcast(powerSettingsIntent);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
     public void addListenerSeekBar()
     {
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         textview = (TextView) findViewById(R.id.textView1);
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                textview.setText("Update rate (sec): " + (progress+10));
-                Settings.getInstance().setAnnouncementUpdateInterval(progress+10);
+                textview.setText("Update rate (sec): " + (progress + 10));
+                Settings.getInstance().setAnnouncementUpdateInterval(progress + 10);
 
             }
 

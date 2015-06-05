@@ -25,7 +25,7 @@ public class BackgroundLocationService extends Service {
     private BroadcastReceiver receiver;
     private ScheduledExecutorService scheduledExecutor;
     private boolean schedulerStarted = false;
-    private static final String TAG = "BackLocSvc";
+    private static final String TAG = BackgroundLocationService.class.getSimpleName();
 
     @Override
     public void onCreate() {
@@ -71,6 +71,11 @@ public class BackgroundLocationService extends Service {
                         Log.d(TAG, "Starting scheduled reconnecter");
                     }
                 }
+                else if (intent.getAction().equals(Constants.POWER_SETTINGS_CHANGED_ACTION)) {
+                    Log.d(TAG, intent.toString());
+                    thread.updateLocationRequest(intent.getIntExtra(Constants.POWER_SETTING_POSITION_TAG, Constants.POWER_PRIORITIES[0]));
+
+                }
                 else { Log.d(TAG, "Received unexpected intent"); }
             }
         };
@@ -78,6 +83,7 @@ public class BackgroundLocationService extends Service {
         LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTED_ACTION));
         LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
         LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
+        LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.POWER_SETTINGS_CHANGED_ACTION));
     }
     private Boolean serviceConnected() { //not used atm
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);

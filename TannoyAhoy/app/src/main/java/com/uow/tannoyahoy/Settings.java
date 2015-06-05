@@ -8,6 +8,7 @@ public class Settings {
     private Boolean mHasBackgroundUpdates;
     private Boolean mHasBackgroundAlerts;
     private Boolean loggedIn;
+    private Boolean hasProximityUpdates;
     private long mReconnectInterval;
     private long mLocationInterval;
     private long mFastestLocationInterval;
@@ -60,6 +61,10 @@ public class Settings {
     //legacy code, still might be implemented/useful
     public Boolean hasBackgroundAlerts() {return  mHasBackgroundAlerts;}
 
+    public Boolean getHasProximityUpdates() { return  hasProximityUpdates; }
+
+    public void setHasProximityUpdates(Boolean updates) { hasProximityUpdates = updates; }
+
     public void setHasBackgroundUpdates(boolean value){mHasBackgroundUpdates = value;}
 
     public void setHasBackgroundAlerts(boolean value){mHasBackgroundAlerts = value;}
@@ -89,6 +94,7 @@ public class Settings {
         mFastestLocationInterval = Constants.DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL;
         mReconnectInterval = Constants.DEFAULT_RECONNECT_TO_LOCATION_CLIENT_INTERVAL;
         mAnnouncementUpdateInterval=Constants.DEFAULT_ANNOUNCEMENT_UPDATE_INTERVAL;
+        hasProximityUpdates = Constants.DEFAULT_HAS_PROXIMITY_UPDATES;
         loggedIn = Constants.DEFAULT_LOGGEDIN;
     }
 }

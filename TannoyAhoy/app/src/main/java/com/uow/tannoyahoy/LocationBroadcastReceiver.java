@@ -109,10 +109,14 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         @Override
         protected void onPostExecute(LinkedList<String> locationNames) {
             super.onPostExecute(locationNames);
-                //update the spinner
-                Spinner locationSpinner = (Spinner) mainActivity.findViewById(R.id.headerSpinner);
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(mainActivity, R.layout.spinner_header_main, locationNames);
-                locationSpinner.setAdapter(spinnerArrayAdapter);
+
+            //update the spinner
+            Spinner locationSpinner = (Spinner) mainActivity.findViewById(R.id.headerSpinner);
+            int selectedPosition = locationSpinner.getSelectedItemPosition();
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(mainActivity, R.layout.spinner_header_main, locationNames);
+            locationSpinner.setAdapter(spinnerArrayAdapter);
+            if (!Settings.getInstance().getHasProximityUpdates()) { locationSpinner.setSelection(selectedPosition); }
+            else { locationSpinner.setSelection(tannoyZones.getClosestZoneIndex()); }
         }
 
         private Boolean inequalityTest(LinkedList<Inequality> inequalityList, BigDecimal xPos, BigDecimal yPos) {
