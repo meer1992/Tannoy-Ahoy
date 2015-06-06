@@ -150,6 +150,8 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
     public Boolean hasStarted() { return hasStarted; }
 
+    public Boolean hasConnected() { return googleApiClient.isConnected(); }
+
     public void updateLocationRequest(int priority) {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         locationPriority = priority;

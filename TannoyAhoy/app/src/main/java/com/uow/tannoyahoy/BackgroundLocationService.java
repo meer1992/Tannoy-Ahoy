@@ -73,7 +73,9 @@ public class BackgroundLocationService extends Service {
                 }
                 else if (intent.getAction().equals(Constants.POWER_SETTINGS_CHANGED_ACTION)) {
                     Log.d(TAG, intent.toString());
-                    thread.updateLocationRequest(intent.getIntExtra(Constants.POWER_SETTING_POSITION_TAG, Constants.POWER_PRIORITIES[0]));
+                    if (thread.hasConnected()) { thread.updateLocationRequest(intent.getIntExtra(Constants.POWER_SETTING_POSITION_TAG, Constants.POWER_PRIORITIES[0])); }
+                    else { Log.d(TAG, "did not update power settings"); }
+
 
                 }
                 else { Log.d(TAG, "Received unexpected intent"); }

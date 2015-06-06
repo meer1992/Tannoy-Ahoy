@@ -15,6 +15,8 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Set;
+
 
 public class SettingsActivity extends ActionBarActivity {
     private SeekBar seekBar;
@@ -34,6 +36,7 @@ public class SettingsActivity extends ActionBarActivity {
 
     public void addListenerProximityCheck() {
         CheckBox proximityCheckBox = (CheckBox) findViewById(R.id.checkBoxProximityUpdates);
+        proximityCheckBox.setChecked(Settings.getInstance().getHasProximityUpdates());
         proximityCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,10 +57,11 @@ public class SettingsActivity extends ActionBarActivity {
         powerSpinner = (Spinner) findViewById(R.id.powerSpinner);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_header_main, Constants.POWER_OPTIONS);
         powerSpinner.setAdapter(spinnerArrayAdapter);
-
+        powerSpinner.setSelection(Settings.getInstance().getPowerSettingsIndex());
         powerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Settings.getInstance().setPowerSettingsIndex(position);
                 Intent powerSettingsIntent = new Intent(Constants.POWER_SETTINGS_CHANGED_ACTION);
                 powerSettingsIntent.putExtra(Constants.POWER_SETTING_POSITION_TAG, Constants.POWER_PRIORITIES[position]);
                 LocalBroadcastManager.getInstance(App.context).sendBroadcast(powerSettingsIntent);
