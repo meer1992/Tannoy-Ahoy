@@ -14,6 +14,7 @@ public class Settings {
     private long mFastestLocationInterval;
     private String username;
     private String password;
+    private int powerSettingsIndex;
 
     private long mAnnouncementUpdateInterval;
 
@@ -75,6 +76,10 @@ public class Settings {
 
     public long getReconnectInterval() {return mReconnectInterval;}
 
+    public int getPowerSettingsIndex() { return  powerSettingsIndex; }
+
+    public void setPowerSettingsIndex(int newSetting) { powerSettingsIndex = newSetting; }
+
     public Boolean getLoggedIn()  {return loggedIn;}
 
     public String getUsername() {return username;}
@@ -96,5 +101,6 @@ public class Settings {
         mAnnouncementUpdateInterval=Constants.DEFAULT_ANNOUNCEMENT_UPDATE_INTERVAL;
         hasProximityUpdates = Constants.DEFAULT_HAS_PROXIMITY_UPDATES;
         loggedIn = Constants.DEFAULT_LOGGEDIN;
+        powerSettingsIndex = Constants.DEFAULT_POWER_SETTINGS_INDEX;
     }
 }

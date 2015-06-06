@@ -23,13 +23,14 @@ public final class Constants {
 
     //default data
     public static final String[] POWER_OPTIONS = {"High Power /  Accuracy", "Balanced Power / Accuracy", "Low Power / Accuracy", "No Power / Lowest Accuracy", "Off"};
-    public static final int[] POWER_PRIORITIES = {100, 102, 105, 0};
+    public static final int[] POWER_PRIORITIES = {          100,                    102,                            104,                105,                    0};
     public static final long DEFAULT_LOCATION_UPDATE_INTERVAL = 30000; //20 seconds
     public static final long DEFAULT_FASTEST_LOCATION_UPDATE_INTERVAL = DEFAULT_LOCATION_UPDATE_INTERVAL /2;
     public static final long DEFAULT_RECONNECT_TO_LOCATION_CLIENT_INTERVAL = DEFAULT_LOCATION_UPDATE_INTERVAL;
     public static final Boolean DEFAULT_HAS_BACKGROUND_LOCATION_UPDATES = true;
     public static final Boolean DEFAULT_HAS_LOCATION_NOTIFICATIONS = true;
     public static final Boolean DEFAULT_HAS_PROXIMITY_UPDATES = true;
+    public static final int DEFAULT_POWER_SETTINGS_INDEX = 0;
 
     public static final Boolean DEFAULT_LOGGEDIN = false;
 
