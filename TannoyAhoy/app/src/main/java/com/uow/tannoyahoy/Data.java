@@ -11,12 +11,14 @@ import java.text.DateFormat;
 public class Data {
     private Date dateSent_ = new Date();
     private String message_ = new String();
-    public Data(String date, String message)
+    private int theID;
+    public Data(String date, String message, int ID)
     {
         DateFormat df1 = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss.SSSSSSS");
         try{
             dateSent_ = df1.parse(date);
             message_ = message;
+            theID = ID;
 
         }
         catch(Exception e)
@@ -34,6 +36,9 @@ public class Data {
     {
 
         return message_;
+    }
+    public int getTheID() {
+        return theID;
     }
 
     @Override

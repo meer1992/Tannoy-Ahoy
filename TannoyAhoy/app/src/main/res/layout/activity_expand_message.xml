@@ -14,22 +14,47 @@
         android:weightSum="1"
         android:id="@+id/linearLayoutMain">
 
-        <TextView
-            android:id="@+id/textToExpand"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="22dp"
             android:paddingStart="22dp"
-            android:paddingEnd="11dp"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp"
-            android:textColor="@color/tannoy_black"
+            android:paddingEnd="5dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             android:background="@color/tannoy_light_blue"
-            android:elevation="7dp"
-            android:elegantTextHeight="true"
-            android:text="Test!" />
+            android:elevation="7dp">
+
+            <TextView
+                android:id="@+id/textToExpand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/tannoy_black"
+                android:background="@color/tannoy_light_blue"
+                android:elegantTextHeight="true"
+                android:text="Test!\nAnd more!"
+                android:layout_toStartOf="@+id/buttonRemove"
+                android:paddingRight="50dp"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentStart="false" />
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="✕"
+                android:id="@+id/buttonRemove"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/custom_button"
+                android:textColor="@color/tannoy_white"
+                android:textStyle="bold"
+                android:layout_alignParentRight="false"
+                android:onClick="removeTheItem"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/tannoy_white_blue" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 
@@ -67,7 +92,7 @@
             android:layout_row="0"
             android:layout_column="1"
             android:layout_columnWeight="1"
-            android:onClick="clearListViewMain"
+            android:onClick="openTranslate"
             android:layout_gravity="fill_horizontal"
             android:background="@drawable/custom_button" />
 

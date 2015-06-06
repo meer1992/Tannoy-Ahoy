@@ -67,6 +67,8 @@ public class MainActivity extends ActionBarActivity {
     private static String currentResponse = "[]";
     private final static String TAG = "TannoyMain";
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
+    public final static String EXPAND_ID = "TannoyExpandID";
+    public final static String EXPAND_SERVER = "TannoyExpandServer";
 
     private final static String strNewJsonExample =
             "{\"name\":\"Test\",\"queue\":{\"128\":{\"time\":\"2015-05-14T16:11:15.0770064\",\"ID\":128,\"message\":\"first message in here\",\"sender\":\"hat\"},\"129\":{\"time\":\"2015-05-14T16:11:15.2080644\",\"ID\":129,\"message\":\"second message in here\",\"sender\":\"hat\"},\"130\":{\"time\":\"2015-05-14T16:11:15.3591318\",\"ID\":130,\"message\":\"third message in here\",\"sender\":\"hat\"},\"131\":{\"time\":\"2015-05-14T16:11:15.5392119\",\"ID\":131,\"message\":\"fourth message in here\",\"sender\":\"hat\"},\"132\":{\"time\":\"2015-05-14T16:11:15.702285\",\"ID\":132,\"message\":\"fifth message in here\",\"sender\":\"hat\"},\"133\":{\"time\":\"2015-05-14T16:11:15.913377\",\"ID\":133,\"message\":\"sixth message in here\",\"sender\":\"hat\"},\"134\":{\"time\":\"2015-05-14T16:11:16.0384326\",\"ID\":134,\"message\":\"seventh and final message in here\",\"sender\":\"hat\"}},\"next_id\":135}";
@@ -92,8 +94,6 @@ public class MainActivity extends ActionBarActivity {
         thisContext = this;
 
 
-
-
         //setup the location-backend
         setupReceiver();
         startAutoUpdate();
@@ -113,10 +113,14 @@ public class MainActivity extends ActionBarActivity {
                                             int position, long id) {
                         Object theObject = theListview.getItemAtPosition(position);
                         String theMessage = theObject.toString();
-                        Log.d(TAG, "Message is: " + theMessage);
+                        int theID = theMainJsonParser.getList().get(position).getTheID();
+
+                        Log.d(TAG, "Message is: " + theMessage + "ID is: " + theID + "Zone is: " + currentSelectedZone);
 
                         Intent intent = new Intent(thisContext, ExpandMessageActivity.class);
                         intent.putExtra(EXPAND_MESSAGE, theMessage);
+                        intent.putExtra(EXPAND_ID, theID);
+                        intent.putExtra(EXPAND_SERVER, currentSelectedZone);
                         startActivity(intent);
                     }
                 }
@@ -347,7 +351,6 @@ public class MainActivity extends ActionBarActivity {
 
     /**Gets the message queue when user clicks "update", then calls directUpdateListViewMain*/
     public void updateListViewMain(View theView) {
-        // TODO: Periodically update
         // TODO: Wrap into a nice method like string s = sendToServer("GETLIST",null)
 
         //hardcoded string

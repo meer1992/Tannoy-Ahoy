@@ -21,6 +21,7 @@ public class JsonParser {
     //private static final String TAG_QUEUE = "queue";
     private static final String TAG_TIME = "time";
     private static final String TAG_MESSAGE = "message";
+    private static final String TAG_ID = "ID";
     //private String sender_ = "";
     private List<Data> lstData_ = new LinkedList<Data>();
     public JsonParser(String strJsonText) {
@@ -47,8 +48,9 @@ public class JsonParser {
                 // Fetch node values
                 String date = jsonChildNode.optString(TAG_TIME);
                 String message = jsonChildNode.getString(TAG_MESSAGE);
+                int id = jsonChildNode.getInt(TAG_ID);
                 // Adding to list
-                lstData_.add(new Data(date,message));
+                lstData_.add(new Data(date,message,id));
             }
 
             // Process each JSON Node
@@ -104,6 +106,7 @@ public class JsonParser {
             ex.printStackTrace();
         }
     }
+    /*
     public JsonParser(JSONObject theJsonObject) {
         try {
             // Creates a new JSONObject with name/value mappings from the JSON string.
@@ -159,6 +162,7 @@ public class JsonParser {
                 Log.d("Json", lstData_.get(i).Message());
 
             }*/
+    /*
         } catch (JSONException jse) {
 
             jse.printStackTrace();
@@ -170,6 +174,7 @@ public class JsonParser {
             ex.printStackTrace();
         }
     }
+    */
     public List<Data> getList()
     {
         return lstData_;

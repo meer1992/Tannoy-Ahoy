@@ -20,6 +20,7 @@ public final class Constants {
 
     public static final String URL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/queue?server=";
     public static final String ADDURL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/add?";
+    public static final String REMOVEURL = "https://bedrock.resnet.cms.waikato.ac.nz:8080/remove?";
 
     //default data
     public static final String[] POWER_OPTIONS = {"High Power /  Accuracy", "Balanced Power / Accuracy", "Low Power / Accuracy", "No Power / Lowest Accuracy", "Off"};
