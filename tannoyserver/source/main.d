@@ -1,15 +1,16 @@
 module tannoy.main;
 
 import vibe.vibe;
-import vibe.http.router : URLRouter;
-import vibe.http.server : HTTPServerSettings, listenHTTP;
-import vibe.stream.ssl 	: createSSLContext, SSLContextKind;
-import vibe.web.rest 	: registerRestInterface;
-import std.file 	: exists;
-import tannoy.server 	: API, Admin;
+import vibe.http.router      : URLRouter;
+import vibe.http.server      : HTTPServerSettings, listenHTTP;
+import vibe.stream.ssl 	     : createSSLContext, SSLContextKind;
+import vibe.web.rest 	     : registerRestInterface;
+import std.file 	     : exists;
+import tannoy.server 	     : API, Admin;
 import core.sys.posix.unistd : fork;
 
 void main(){
+	//Check if we're OK to run
 	if (!finalizeCommandLineOptions()) return;
 
 	//Ensure SSL key and certificate is present
@@ -23,9 +24,9 @@ void main(){
 	auto api = new API();
 	
 	//Default admins, any combination can be added
-	auto admins = [ Admin("admin", "admin") ];
+	auto admins = [ Admin("admin", "secret") ];
 
-	//Default servers. Feel free to add whatever you see fit
+	//Default servers
 	api.makeServer("Auckland Airport", admins);
 	api.makeServer("Wellington Airport", admins);
 	api.makeServer("Christchurch Airport", admins);

@@ -1,8 +1,8 @@
 {
 	"name": "tannoyserver",
-	"description": "A simple vibe.d server application.",
-	"copyright": "Copyright © 2015, mitch",
-	"authors": ["mitch"],
+	"description": "Custom server for the Tannoy Ahoy! project.",
+	"copyright": "Copyright © 2015, Mitchell Grout",
+	"authors": ["Mitchell Grout"],
 	"dependencies": {
 		"vibe-d": "~master",
        	},

@@ -1,11 +1,5 @@
 module tannoy.server;
 
-//Testing
-import std.stdio;
-import std.exception 		: ErrnoException;
-import core.stdc.string 	: strerror;
-
-
 import std.datetime		: SysTime, Clock;
 import core.time;
 import std.range 		: array;
@@ -15,12 +9,13 @@ import vibe.http.common;
 import vibe.core.log 		: logInfo;
 import vibe.core.core;
 
-//Messages for HTTPStatusException
+//Messages for errors
 enum ERROR_ID     = "Could not find the specified ID";
 enum ERROR_SERVER = "Could not find the specified server";
 enum ERROR_USER   = "Invalid credentials";
 
-//Messages for logInfo
+//Messages for general logging
+enum LOG_CLEANUP  = "[%s] Starting automatic cleanup";
 enum LOG_LIST     = "[%s] List requested";
 enum LOG_QUEUE	  = "[%s] Queue requested: Server = %s";
 enum LOG_VALID	  = "[%s] Credential checking: Server = %s - Username = %s";
@@ -121,11 +116,12 @@ interface ResponseAPI {
 	//Returns: {}
 	void putRemove(string server, int ID, string username, string password);
 }
- 
-class API : ResponseAPI {
 
-	enum timerDelay = 10.seconds;//1.minutes;	
-	enum timeout = 30.minutes;
+//API implementation
+class API : ResponseAPI {
+	enum timerDelay = 1.minutes;
+	enum timeout = 60.minutes;
+ 	protected Server[string] serverList;
 	
 	this(){
 		setTimer(timerDelay, &removeItems, true);
@@ -136,19 +132,16 @@ class API : ResponseAPI {
 		serverList[server].admins = admins;
 	}
 
- 	protected Server[string] serverList;
-	
 	private void removeItems(){
-		size_t i = 0;
 		auto now = Clock.currTime;
-		logInfo_safe("[%s] Starting cleanup", now.toString);	
+		logInfo(LOG_CLEANUP, now.toString);	
 		auto keys = serverList.keys;
 		foreach(key; keys){
 			auto server = serverList[key];
 			auto IDs = server.queue.keys;
 			foreach(ID; IDs){
 				if(now - server.queue[ID].time > timeout){
-					logInfo_safe("\t-> Removal - ID: %s", ID);
+					logInfo("\t-> Removal - Server = %s - ID = %s", server.server, ID);
 					server.queue.remove(ID);
 				}
 			}
@@ -156,42 +149,42 @@ class API : ResponseAPI {
 	}
 
 	string[] getList(){
-		logInfo_safe(LOG_LIST, time);
+		logInfo(LOG_LIST, time);
 		return serverList.keys;
 	}
 
 	Response[] getQueue(string server){
-		logInfo_safe(LOG_QUEUE, time, server);	
+		logInfo(LOG_QUEUE, time, server);	
 		if(server !in serverList){ 
-			logInfo_safe("\tCouldn't find server");
+			logInfo("\t" ~ ERROR_SERVER);
 			throw new HTTPStatusException(400, ERROR_SERVER); 
 		}
-		logInfo_safe("\tSuccess");
+		logInfo("\tSuccess");
 		return serverList[server].queue.values.sort!"a.time>b.time".array;
 	}
 
 	bool getValid(string server, string username, string password){
-		logInfo_safe(LOG_VALID, time, server, username);		
+		logInfo(LOG_VALID, time, server, username);		
 		if(server !in serverList){
-			logInfo_safe("\tCouldn't find server");
+			logInfo("\t" ~ ERROR_SERVER);
 			throw new HTTPStatusException(400, ERROR_SERVER);
 		}
 		auto result = serverList[server].inAdmins( Admin(username, password) );
-		logInfo_safe("\tValid: %s", result);		
+		logInfo("\tValid: %s", result);		
 		return result;
 	}
  
 	void putAdd(string server, string message, string username, string password){
-		logInfo_safe(LOG_ADD, time, server, username, message);		
+		logInfo(LOG_ADD, time, server, username, message);		
 		if(server !in serverList){
-			logInfo_safe("\tCouldn't find server");
+			logInfo("\t" ~ ERROR_SERVER);
 			throw new HTTPStatusException(400, ERROR_SERVER); 
 		}	
 		else if(!serverList[server].inAdmins( Admin(username, password) )){
-			logInfo_safe("\tInvalid user/pass");			
+			logInfo("\t" ~ ERROR_USER);			
 			throw new HTTPStatusException(403, ERROR_USER);
 		}
-		logInfo_safe("\tSuccess");
+		logInfo("\tSuccess");
 		auto ID = serverList[server].next_id++;		
 		serverList[server].queue[ID] = Response(ID, message);
 		
@@ -199,45 +192,41 @@ class API : ResponseAPI {
 
 	void putDie(string username, string password){
 		import std.c.stdlib;		
-		if(username != "admin" || password != "admin"){
-			logInfo_safe("[%s] %s attempted to kill the server, but was rejected", time, username);		 	
+		logInfo(LOG_DIE, time, username);
+		if(username != "admin" || password != "secret"){
+			logInfo(ERROR_USER, time, username);		 	
 			throw new HTTPStatusException(403, ERROR_USER);
 		}
-		logInfo_safe(LOG_DIE, time, username);
+		logInfo("\tSuccess");
 		exit(0);
 	}
 
 	void putRemove(string server, int ID, string username, string password){		
-		logInfo_safe(LOG_REMOVE, time, server, ID, username);
+		logInfo(LOG_REMOVE, time, server, ID, username);
 		if(server !in serverList) { 
-			logInfo_safe("\tCouldn't find server");
+			logInfo("\t" ~ ERROR_SERVER);
 			throw new HTTPStatusException(400, ERROR_SERVER); 
 		}
 		if(!serverList[server].inAdmins( Admin(username, password) )){
-			logInfo_safe("\tInvalid user/pass");			
+			logInfo("\t" ~ ERROR_USER);			
 			throw new HTTPStatusException(403, ERROR_USER);
 		}
 		if(ID !in serverList[server].queue){ 
-			logInfo_safe("\tCouldn't find ID");
+			logInfo("\t" ~ ERROR_ID);
 			throw new HTTPStatusException(400, ERROR_ID); 
 		}
-		logInfo_safe("\tSuccess");
+		logInfo("\tSuccess");
 		serverList[server].queue.remove(ID);
 	}
 }
 
-///Get the current time as a string
+//Get the current time as a string
 string time(){
 	return Clock.currTime.toString;
 }
 
-///Salt the input, hash it, transform to a hex string, return it.
+//Salt the input, hash it, transform to a hex string, return it.
 string hash(string input){
 	import std.digest.md, std.digest.digest;
 	return (input~"salty").md5Of.toHexString.idup;
-}
-
-void logInfo_safe(T...)(string format, T args){
-	try{ logInfo(format, args); }
-	catch(ErrnoException ex){ stderr.writefln("ERROR CODE: %s\nMESSAGE: %s", ex.errno, cast(string)strerror(ex.errno)); } //Capture error code
 }
