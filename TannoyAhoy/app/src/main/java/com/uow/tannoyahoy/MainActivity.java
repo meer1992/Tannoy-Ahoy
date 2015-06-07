@@ -59,7 +59,6 @@ public class MainActivity extends ActionBarActivity {
     Spinner theSpinner;
     private LocationBroadcastReceiver locationBroadcastReceiver = LocationBroadcastReceiver.getInstance();
     private Context thisContext;
-    private String currentSelectedZone = "";
     private String theFilter = "";
     static private  boolean updateThreadStarted = false;
     private static String previousResponse = "[]";
@@ -115,12 +114,12 @@ public class MainActivity extends ActionBarActivity {
                         String theMessage = theObject.toString();
                         int theID = theMainJsonParser.getList().get(position).getTheID();
 
-                        Log.d(TAG, "Message is: " + theMessage + "ID is: " + theID + "Zone is: " + currentSelectedZone);
+                        Log.d(TAG, "Message is: " + theMessage + "ID is: " + theID + "Zone is: " + TannoyZones.getInstance().getLocationNames().get(theSpinner.getSelectedItemPosition()));
 
                         Intent intent = new Intent(thisContext, ExpandMessageActivity.class);
                         intent.putExtra(EXPAND_MESSAGE, theMessage);
                         intent.putExtra(EXPAND_ID, theID);
-                        intent.putExtra(EXPAND_SERVER, currentSelectedZone);
+                        intent.putExtra(EXPAND_SERVER, TannoyZones.getInstance().getLocationNames().get(theSpinner.getSelectedItemPosition()));
                         startActivity(intent);
                     }
                 }
@@ -131,13 +130,9 @@ public class MainActivity extends ActionBarActivity {
                 new ArrayAdapter<String>(this, R.layout.spinner_header_main, TannoyZones.getInstance().getLocationNames())
         );
 
-        currentSelectedZone = TannoyZones.getInstance().getLocationNames().get(TannoyZones.getInstance().getClosestZoneIndex());
-
         theSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                currentSelectedZone = TannoyZones.getInstance().getLocationNames().get(position);
-
                 updateListViewMain(null);
                 Log.d("MainSpinnerUpdate", "updated");
             }
@@ -367,7 +362,7 @@ public class MainActivity extends ActionBarActivity {
 
         //NOTE: 10.0.2.2 is for emulators only.
         //Uses HTTPS
-        theFilter = currentSelectedZone.replace(" ", "%20");
+        theFilter = TannoyZones.getInstance().getLocationNames().get(theSpinner.getSelectedItemPosition()).replace(" ", "%20");
         String theURL = Constants.URL + theFilter;
         Log.d("VolleyGet", "it was called");
 
