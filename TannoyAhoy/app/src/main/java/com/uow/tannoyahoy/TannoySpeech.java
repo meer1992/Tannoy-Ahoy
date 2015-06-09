@@ -9,6 +9,7 @@ import android.util.Log;
 import java.util.Locale;
 
 /**
+ * Created by Anthony on 29/04/2015.
  * TannoySpeech can easily turn any text into speech according to the system locale.
  * If text-to-speech is not installed, it will prompt to install it.
  */
@@ -64,5 +65,10 @@ public class TannoySpeech {
         else {
             theTTS.speak(lineToSpeak,TextToSpeech.QUEUE_ADD,null);
         }
+
+    }
+
+    public void kill(){
+        theTTS.shutdown();
     }
 }

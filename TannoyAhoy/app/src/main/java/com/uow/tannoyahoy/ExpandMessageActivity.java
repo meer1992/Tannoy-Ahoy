@@ -52,6 +52,13 @@ public class ExpandMessageActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        theTannoySpeech.kill();
+        Log.d("Oceania", "No more speech");
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);

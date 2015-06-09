@@ -44,6 +44,6 @@ public class Data {
     @Override
     public String toString()
     {
-        return(DateFormat.getTimeInstance(DateFormat.MEDIUM).format(dateSent_)+"\n"+message_);
+        return(DateFormat.getTimeInstance(DateFormat.SHORT).format(dateSent_)+",\n"+message_);
     }
 }
