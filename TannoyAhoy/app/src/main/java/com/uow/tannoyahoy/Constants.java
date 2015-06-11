@@ -30,7 +30,7 @@ public final class Constants {
     public static final long DEFAULT_RECONNECT_TO_LOCATION_CLIENT_INTERVAL = DEFAULT_LOCATION_UPDATE_INTERVAL;
     public static final Boolean DEFAULT_HAS_BACKGROUND_LOCATION_UPDATES = true;
     public static final Boolean DEFAULT_HAS_LOCATION_NOTIFICATIONS = true;
-    public static final Boolean DEFAULT_HAS_PROXIMITY_UPDATES = true;
+    public static final Boolean DEFAULT_HAS_PROXIMITY_UPDATES = false;
     public static final int DEFAULT_POWER_SETTINGS_INDEX = 0;
 
     public static final Boolean DEFAULT_LOGGEDIN = false;

@@ -127,7 +127,8 @@ public class MakeAnnouncement extends ActionBarActivity {
 
                 Intent a = new Intent(v.getContext(), MainActivity.class);
                 a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(a);
+                onBackPressed();
+                //startActivity(a);
                 Toast.makeText(getApplicationContext(), "Announcement made", Toast.LENGTH_LONG).show();
             }
         });

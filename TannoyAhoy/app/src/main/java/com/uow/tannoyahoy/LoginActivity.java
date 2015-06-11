@@ -41,7 +41,8 @@ public class LoginActivity extends ActionBarActivity {
                 Log.d(TAG, "username " + Settings.getInstance().getUsername() + "password " + Settings.getInstance().getPassword());
                 Intent a = new Intent(v.getContext(), MainActivity.class);
                 a.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(a);
+                onBackPressed();
+                //startActivity(a);
                 Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_LONG).show();
             }
         });

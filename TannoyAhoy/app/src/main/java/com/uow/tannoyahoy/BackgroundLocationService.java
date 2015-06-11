@@ -30,6 +30,7 @@ public class BackgroundLocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        setupReceiver();
         Log.d(TAG, "onCreate");
     }
 
@@ -41,7 +42,7 @@ public class BackgroundLocationService extends Service {
         thread = LocationThread.getInstance();
         if (thread.hasStarted()) { thread.setRunning(true); }
         else { thread.start(); }
-        setupReceiver();
+
         //Schedule checks for whether a reconnect to client is necessary every X seconds
 /*        scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
         Settings settings = Settings.getInstance();

@@ -31,6 +31,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.LocationServices;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -98,10 +100,14 @@ public class MainActivity extends ActionBarActivity {
 
         //setup the location-backend
         Log.d("AutoUpdate", "IT made it to the startup phase");
-        setupReceiver();
+
         startAutoUpdate();
         startService(new Intent(thisContext, BackgroundLocationService.class));
-        if (TannoyZones.getInstance().getBoundaries() == null) { new DetermineTannoyBoundaries(TannoyZones.getInstance()).execute(""); }
+        LocationBroadcastReceiver.getInstance().setRootActivity(this);
+        if (TannoyZones.getInstance().getBoundaries() == null) {
+            setupReceiver();
+            new DetermineTannoyBoundaries(TannoyZones.getInstance()).execute("");
+        }
         //Also perform initial setup of activity components
 
 //        userLocalStore = new UserLocalStore(this);
@@ -259,7 +265,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupReceiver() {
-            LocationBroadcastReceiver.getInstance().setRootActivity(this);
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTED_ACTION));
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
             LocalBroadcastManager.getInstance(App.context).registerReceiver(locationBroadcastReceiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));
