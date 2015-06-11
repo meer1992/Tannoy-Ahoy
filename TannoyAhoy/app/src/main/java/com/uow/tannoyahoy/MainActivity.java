@@ -61,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
     private LocationBroadcastReceiver locationBroadcastReceiver = LocationBroadcastReceiver.getInstance();
     private Context thisContext;
     private String theFilter = "";
+    private long  updateInterval = 10;
     private Date lastUpdate = new Date();
     static private  boolean updateThreadStarted = false;
 
@@ -175,33 +176,8 @@ public class MainActivity extends ActionBarActivity {
 
         if(updateThreadStarted == false) {
             updateThreadStarted = true;
+            startScheduler();
 
-            ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-            exec.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-
-                    // do stuff
-                    if(Settings.getInstance().hasBackgroundUpdates()) {
-                        autoUpdate = true;
-                        Log.d("AutoUpdate", Boolean.toString(autoUpdate) + "Auto update boolean");
-                        updateListViewMain(null);
-
-                        if(Settings.getInstance().hasBackgroundAlerts()) {
-
-
-                                Log.d("AutoUpdate",Long.toString(Settings.getInstance().getAnnouncementUpdateInterval())+ "annoncument interval");
-
-                            }
-
-                        }
-                    }
-
-
-
-
-
-        }, 0, Settings.getInstance().getAnnouncementUpdateInterval(), TimeUnit.MILLISECONDS);
 
         }
         else
@@ -211,6 +187,34 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
+
+    }
+    private void startScheduler()
+    {
+       final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+
+                // do stuff
+                if(Settings.getInstance().hasBackgroundUpdates()) {
+                    autoUpdate = true;
+                    if(Settings.getInstance().getSeekBarChanged())
+                    {
+                        while(Settings.getInstance().seekBarActive())
+                        {
+
+                        }
+                        Settings.getInstance().setSeekBarChanged(false);
+                        exec.shutdown();
+                        startScheduler();
+                    }
+
+                    Log.d("AutoUpdate", Boolean.toString(autoUpdate) + "Auto update boolean");
+                    updateListViewMain(null);
+                }
+            }
+        }, 0, Settings.getInstance().getAnnouncementUpdateInterval(), TimeUnit.MILLISECONDS);
 
     }
     /*

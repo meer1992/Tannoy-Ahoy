@@ -5,6 +5,8 @@ package com.uow.tannoyahoy;
  */
 public class Settings {
     private static Settings ourInstance;
+    private Boolean seekBarActive = false;
+    private Boolean seekBarChanged = false;
     private Boolean mHasBackgroundUpdates;
     private Boolean mHasBackgroundAlerts;
     private Boolean loggedIn;
@@ -49,10 +51,18 @@ public class Settings {
 
     public void setPassword(String password) {this.password = password;}
 
+    public void setSeekBarActive(Boolean activity) {this.seekBarActive = activity;}
+
+    public void setSeekBarChanged(Boolean activity) {this.seekBarChanged = activity;}
+
+    public Boolean getSeekBarChanged() {return seekBarChanged;}
+
+
     public void setFastestLocationInterval(long value) {
         if (value < mLocationInterval) {mFastestLocationInterval = value;}
         else {mLocationInterval = mFastestLocationInterval = value;}
     }
+    public Boolean seekBarActive(){return seekBarActive;}
 
     public void setAnnouncementUpdateInterval(long value) {mAnnouncementUpdateInterval = value*1000;}
 

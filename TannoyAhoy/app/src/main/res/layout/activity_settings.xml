@@ -70,7 +70,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/seekBar"
         android:background="@color/tannoy_light_blue"
-        android:max="3590" />
+        android:max="110"
+        />
     <TextView
         android:id="@+id/textView1"
         android:textAppearance="?android:attr/textAppearanceMedium"

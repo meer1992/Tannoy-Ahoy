@@ -91,12 +91,15 @@ public class SettingsActivity extends ActionBarActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                Settings.getInstance().setSeekBarActive(true);
+                Settings.getInstance().setSeekBarChanged(true);
 
 
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                Settings.getInstance().setSeekBarActive(false);
 
             }
 
