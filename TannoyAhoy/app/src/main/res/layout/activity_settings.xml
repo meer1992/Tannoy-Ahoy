@@ -34,6 +34,13 @@
         android:checked="true"
         />
 
+    <Spinner style="@style/CustomSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/powerSpinner"
+        android:background="@color/tannoy_light_blue" />
+
     <CheckBox style="@style/CustomCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,12 +92,5 @@
         android:text = "Update rate (sec): 10"
         android:paddingStart="50dp"
         android:paddingEnd="10dp" />
-
-    <Spinner style="@style/CustomSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/powerSpinner"
-        android:background="@color/tannoy_light_blue" />
 
 </LinearLayout>
