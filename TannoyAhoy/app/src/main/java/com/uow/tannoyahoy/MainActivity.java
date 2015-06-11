@@ -42,6 +42,7 @@ import android.os.Bundle;
 
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,10 +61,11 @@ public class MainActivity extends ActionBarActivity {
     private LocationBroadcastReceiver locationBroadcastReceiver = LocationBroadcastReceiver.getInstance();
     private Context thisContext;
     private String theFilter = "";
+    private Date lastUpdate = new Date();
     static private  boolean updateThreadStarted = false;
-    private static String previousResponse = "[]";
+
     private static boolean autoUpdate = false;
-    private static String currentResponse = "[]";
+
     private final static String TAG = "TannoyMain";
     public final static String EXPAND_MESSAGE = "TannoyExpandMessage";
     public final static String EXPAND_ID = "TannoyExpandID";
@@ -94,6 +96,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         //setup the location-backend
+        Log.d("AutoUpdate", "IT made it to the startup phase");
         setupReceiver();
         startAutoUpdate();
         startService(new Intent(thisContext, BackgroundLocationService.class));
@@ -181,25 +184,23 @@ public class MainActivity extends ActionBarActivity {
                     // do stuff
                     if(Settings.getInstance().hasBackgroundUpdates()) {
                         autoUpdate = true;
+                        Log.d("AutoUpdate", Boolean.toString(autoUpdate) + "Auto update boolean");
                         updateListViewMain(null);
-                        autoUpdate = false;
-                        Log.d("AutoUpdate", "it auto updated");
+
                         if(Settings.getInstance().hasBackgroundAlerts()) {
-                            if (currentResponse.equals(previousResponse)) {
-                            } else {
-                                showNotification();
-                                Log.d("AutoUpdate", "put notification here");
-                                Log.d("AutoUpdate",Long.toString(Settings.getInstance().getAnnouncementUpdateInterval()));
+
+
+                                Log.d("AutoUpdate",Long.toString(Settings.getInstance().getAnnouncementUpdateInterval())+ "annoncument interval");
 
                             }
-                            previousResponse = currentResponse;
+
                         }
                     }
 
 
 
 
-            }
+
         }, 0, Settings.getInstance().getAnnouncementUpdateInterval(), TimeUnit.MILLISECONDS);
 
         }
@@ -240,7 +241,7 @@ public class MainActivity extends ActionBarActivity {
         Bitmap icon = BitmapFactory.decodeResource(thisContext.getResources(),
                 R.drawable.tannoy_ahoy_icon);
         Notification notification = new NotificationCompat.Builder(this)
-                .setTicker("ticker")
+                .setTicker("New Messages available")
                 .setLargeIcon(icon)
                 .setSmallIcon(R.drawable.tannoy_ahoy_icon)
                 .setContentTitle("New messages available!")
@@ -374,12 +375,37 @@ public class MainActivity extends ActionBarActivity {
                             public void onResponse(String response) {
                                 Log.d(TAG, "HTTP Response is: " + response);
                                 Log.d("VolleyGet", "inside the response");
-                                currentResponse = response;
-                                if(autoUpdate == false) {
-                                previousResponse = currentResponse;
-                                }
+
+
 
                                 theMainJsonParser = new JsonParser(response);
+                                Log.d("AutoUpdate", Boolean.toString(autoUpdate)+"autoUpdate boolean inside the call");
+                                try {
+                                    if (autoUpdate == true) {
+
+
+                                        if (theMainJsonParser.getList().isEmpty() == false) {
+
+                                            if (theMainJsonParser.getList().get(0).DateSent().after(lastUpdate)) {
+                                                Log.d("AutoUpdate", "it should update/ past first if");
+                                                if (Settings.getInstance().hasBackgroundAlerts()) {
+                                                    showNotification();
+                                                    Log.d("AutoUpdate", "put notification here");
+                                                    Log.d("AutoUpdate", Long.toString(Settings.getInstance().getAnnouncementUpdateInterval()));
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                    if (theMainJsonParser != null) {
+                                        lastUpdate = theMainJsonParser.getList().get(0).DateSent();
+                                    }
+                                }
+                                catch(Exception ex)
+                                {
+                                 Log.e("autoUpdate", "there was an error in the auto update portion of the code");
+                                }
+                                autoUpdate = false;
                                 directUpdateListViewMain();
                             }
                         }, new Response.ErrorListener() {
@@ -387,7 +413,7 @@ public class MainActivity extends ActionBarActivity {
                              public void onErrorResponse(VolleyError error) {
                                 Log.d(TAG, "HTTP Request didn't work!" + error);
                             }
-                        });
+                });
 
         theQueue.add(theStringRequest);
 
