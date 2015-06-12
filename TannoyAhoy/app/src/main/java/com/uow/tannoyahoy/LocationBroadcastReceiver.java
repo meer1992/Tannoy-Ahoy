@@ -32,9 +32,17 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         return ourInstance;
     }
 
+    /**
+     * Keeps reference of the creator of this, so that when the DetermineClosestPlace task wishes to update the location spinner, it has access to the activity's UI elements.
+     * @param activity Reference to the activity that created this
+     */
     public void setRootActivity(Activity activity) { mainActivity = activity; }
 
-    //filters for intents produced by the locationService
+    /**
+     * Checks to see whether the intent was one this receiver has indicated interest in. If it is, it performs the associated response code
+     * @param context Where the signal came from
+     * @param intent The signal sent through the LocalBroadcastManager
+     */
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Constants.BOOT_COMPLETED_ACTION)) {
 /*            boolean mUpdatesRequested = false;
@@ -86,12 +94,21 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 
         public DetermineClosestPlace(TannoyZones zones) { tannoyZones = zones; }
 
+        /**
+         * Tests whether the current closest place is still the closest place. If it is not, then it checks the other inequality lists to see which of those is the new closest place.
+         * @param params
+         * @return
+         */
         @Override
         protected LinkedList<String> doInBackground(String... params) {
+            //if fails the test
             if (!inequalityTest(tannoyZones.getBoundaries().get(tannoyZones.getClosestZoneIndex()), new BigDecimal(CurrentLocation.currentLocation.getLatitude()), new BigDecimal(CurrentLocation.currentLocation.getLongitude()))) {
                 for (int i = 0; i < tannoyZones.getBoundaries().size(); i++) {
+                    // loop through each other inequalityList
                     if (i != tannoyZones.getClosestZoneIndex()) {
+                        //if passes the test
                         if (inequalityTest(tannoyZones.getBoundaries().get(i), new BigDecimal(CurrentLocation.currentLocation.getLatitude()), new BigDecimal(CurrentLocation.currentLocation.getLongitude()))) {
+                            //set this inequalityList to the new closest place
                             tannoyZones.setClosestZoneIndex(i);
                             Log.d(TAG, "Changed closest place to " + i);
                             break;
@@ -100,12 +117,17 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
                 }
             }
             else { Log.d(TAG, "Location unchanged"); }
+            //add a * to closest place
             LinkedList locationNames = (LinkedList<String>)tannoyZones.getLocationNames().clone();
             String closestPlace = tannoyZones.getLocationNames().get(tannoyZones.getClosestZoneIndex()).concat("*");
             locationNames.set(tannoyZones.getClosestZoneIndex(), closestPlace);
             return locationNames;
         }
 
+        /**
+         *  Updates the location spinner on the main activity to indicate the closest place, and set the spinner's selection the closest place if the user specifies it in the settings
+         * @param locationNames the list of places that support announcements
+         */
         @Override
         protected void onPostExecute(LinkedList<String> locationNames) {
             super.onPostExecute(locationNames);
@@ -115,16 +137,26 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
             int selectedPosition = locationSpinner.getSelectedItemPosition();
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(mainActivity, R.layout.spinner_header_main, locationNames);
             locationSpinner.setAdapter(spinnerArrayAdapter);
+
+            // if user wants spinner to retain previous selection
             if (!Settings.getInstance().getHasProximityUpdates()) { locationSpinner.setSelection(selectedPosition); }
+            //if user wants spinner to automatically set to closest place
             else { locationSpinner.setSelection(tannoyZones.getClosestZoneIndex()); }
         }
 
+        /**
+         * Tests whether an inequality list, tied to a given place, is closest.
+         * @param inequalityList list of inequalities to test
+         * @param xPos x-coord of user's location
+         * @param yPos y-coord of user's location
+         * @return returns true if the user's location was on the correct side of all inequalities, else returns false
+         */
         private Boolean inequalityTest(LinkedList<Inequality> inequalityList, BigDecimal xPos, BigDecimal yPos) {
             //get request from server to populate lists in TannoyZones
             //sanitise the keys from the server
             if (inequalityList != null) {
-                for (Inequality inequality : inequalityList) {
-                    if (!inequality.testInequality(xPos, yPos)) {
+                for (Inequality inequality : inequalityList) { // loop through each inequality
+                    if (!inequality.testInequality(xPos, yPos)) { // if it fails once, the whole test fails
                         Log.d(TAG, "failed inequality test");
                         return false;
                     }

@@ -34,37 +34,43 @@ public class BackgroundLocationService extends Service {
         Log.d(TAG, "onCreate");
     }
 
+    /**
+     * Sets the thread going
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        //make thread go
+
         thread = LocationThread.getInstance();
         if (thread.hasStarted()) { thread.setRunning(true); }
         else { thread.start(); }
-
-        //Schedule checks for whether a reconnect to client is necessary every X seconds
-/*        scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
-        Settings settings = Settings.getInstance();
-        scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);*/
 
         Log.d(TAG, "onStart");
         return START_STICKY;
     }
 
+    /**
+     * Creates the receiver which allows the service to ensure the location thread keeps trying to reconnect to google play services, or signals to the location thread to update its location request
+     * when the user changes the desired level of accuracy
+     */
     private void setupReceiver() {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.CONNECTED_ACTION)) {
-                    if (schedulerStarted) { //if started, stop
+                    if (schedulerStarted) { //if started, stop the reconnecter
                         scheduledExecutor.shutdown();
                         schedulerStarted = false;
                         Log.d(TAG, "Shutting down scheduled reconnecter");
                     }
                 }
                 else if (intent.getAction().equals(Constants.CONNECTION_FAILED_ACTION) || intent.getAction().equals(Constants.CONNECTION_SUSPENDED_ACTION)) {
-                    if (!schedulerStarted) { // if stopped, start
+                    if (!schedulerStarted) { // if stopped, start the reconnecter
                         scheduledExecutor = Executors.newScheduledThreadPool(1); //1 core
                         Settings settings = Settings.getInstance();
                         scheduledExecutor.scheduleAtFixedRate(thread, settings.getReconnectInterval(), settings.getReconnectInterval(), TimeUnit.MILLISECONDS);
@@ -76,13 +82,12 @@ public class BackgroundLocationService extends Service {
                     Log.d(TAG, intent.toString());
                     if (thread.hasConnected()) { thread.updateLocationRequest(intent.getIntExtra(Constants.POWER_SETTING_POSITION_TAG, Constants.POWER_PRIORITIES[0])); }
                     else { Log.d(TAG, "did not update power settings"); }
-
-
                 }
                 else { Log.d(TAG, "Received unexpected intent"); }
             }
         };
 
+        //setup the receiver to listen for these 4 actions
         LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTED_ACTION));
         LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTION_FAILED_ACTION));
         LocalBroadcastManager.getInstance(App.context).registerReceiver(receiver, new IntentFilter(Constants.CONNECTION_SUSPENDED_ACTION));

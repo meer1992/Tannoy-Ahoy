@@ -58,6 +58,9 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
         Log.d(TAG, "onStart");
     }
 
+    /**
+     * Attempts to connect to google play services if it is not already connected/connecting
+     */
     @Override
     public void run() {
         super.run();
@@ -70,6 +73,10 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
         }
     }
 
+    /**
+     * Broadcast to the rest of the application connection success
+     * @param bundle
+     */
     public void onConnected(Bundle bundle) {
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, createLocationRequest(), this);
         //notify anyone who cares of connection success
@@ -80,6 +87,10 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
     }
 
+    /**
+     * Broadcast to the rest of the application a connection failed signal, also storing the connectionResult.
+     * @param connectionResult How the connection attempt failed
+     */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
@@ -93,6 +104,10 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
         Log.d(TAG, "onConnectionFailed");
     }
 
+    /**
+     * Stops location updates and signals to the rest of the application this event
+     * @param i Why the connection was suspended
+     */
     @Override
     public void onConnectionSuspended(int i) {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
@@ -106,6 +121,10 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
         Log.d(TAG, "onConnectionSuspended");
     }
 
+    /**
+     * Tells the rest of the application that the user's location has changed, and updates the application's reference to the user's last known location
+     * @param location Data concerning the user's location
+     */
     @Override
     public void onLocationChanged(Location location) {
 
@@ -119,6 +138,10 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
         Log.d(TAG, "onLocationChanged");
     }
 
+    /**
+     * Creates a new locationRequest based on the locationPriority value, which represents the desired level of accuracy.
+     * @return
+     */
     private LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
         if (locationPriority != 0) {
@@ -138,7 +161,10 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
         return isRunning;
     }
 
-    //turn the thread on or off
+    /**
+     * Turns the thread on or off
+     * @param newState the thread's new state
+     */
     public void setRunning(Boolean newState) {
         isRunning = newState;
         if (isRunning == false && googleApiClient.isConnected()) { googleApiClient.disconnect(); }
@@ -152,6 +178,10 @@ public class LocationThread extends Thread implements GoogleApiClient.Connection
 
     public Boolean hasConnected() { return googleApiClient.isConnected(); }
 
+    /**
+     *  Restarts location updates with the new priority
+     * @param priority The level of accuracy specified by the user via the settings spinner
+     */
     public void updateLocationRequest(int priority) {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         locationPriority = priority;
